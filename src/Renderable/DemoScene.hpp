@@ -12,9 +12,11 @@ class DemoScene {
       DemoScene(const int width, const int height);
       void render();
       void setSize(const int width, const int height);
+      void update(const float dt);
 
    private:
       Cube* cube_;
+      float cube_rotation_;
       glm::mat4 projection_matrix_;
       GLMatrixStack stack_;
       int width_;

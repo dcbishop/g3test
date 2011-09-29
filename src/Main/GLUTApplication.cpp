@@ -4,6 +4,8 @@
 #include <GL3/gl3.h>
 #include <GL/freeglut.h>
 
+#include <boost/date_time/posix_time/posix_time.hpp>
+
 #include "../Renderable/DemoScene.hpp"
 
 #include "../Debug/console.h"
@@ -18,7 +20,7 @@ GLUTApplication::GLUTApplication(int& argc, char* argv[]) {
    glutInitContextFlags(GLUT_FORWARD_COMPATIBLE | GLUT_DEBUG);
    /*glutInitContextProfile(GLUT_CORE_PROFILE);*/
    glutInitContextProfile(GLUT_COMPATIBILITY_PROFILE);
-   glutIdleFunc(idle_);
+   //glutIdleFunc(idle_);
    glutDisplayFunc(render_);
    glutReshapeFunc(resize_);
    glutCreateWindow("GLUT Application");
@@ -39,6 +41,23 @@ void GLUTApplication::setSize(const int width, const int height) {
    demo_scene_->setSize(width, height);
 }
 
+void GLUTApplication::update() {
+   using namespace boost::posix_time;
+
+   static ptime last(microsec_clock::local_time());
+
+   static ptime current;
+   current = microsec_clock::local_time();
+
+   static time_duration diff;
+   diff = current - last;
+
+   GLUTApplication::demo_scene_->update(diff.total_milliseconds()/1000.0f);
+   if(diff.total_milliseconds()/1000.0f != 0.0f) {
+      last = current;
+   }
+}
+
 void idle_(void) {
    // Do nothing...
 }
@@ -50,6 +69,7 @@ void render_(void) {
 }
 
 void timer_(int) {
+   GLUTApplication::update();
    render_();
    glutPostRedisplay();
    glutTimerFunc(1000/60, timer_, 0);

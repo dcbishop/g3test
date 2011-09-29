@@ -47,7 +47,12 @@ void Cube::init() {
 
    // C++11 only!
    vector<vec3> vertices {
-      lbf, ltf, rtf, lbf, rtf, rbf // Front
+      rtf, ltf, lbf, rbf, rtf, lbf, // Front
+      rtb, lbb, ltb, rbb, lbb, rtb, // Back
+      ltf, ltb, lbb, ltf, lbb, lbf, // Left 
+      rtb, rtf, rbf, rbb, rtb, rbf, // Right
+      ltf, rtf, rtb, rtb, ltb, ltf, // Top
+      rbb, rbf, lbf, lbf, lbb, rbb // Bottom
    };
 
    buffer_.bind();

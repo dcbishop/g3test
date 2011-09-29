@@ -9,6 +9,7 @@ class GLUTApplication {
       ~GLUTApplication();
       static void setSize(const int width, const int height);
       void run();
+      static void update();
 
       static DemoScene* demo_scene_;
 };
