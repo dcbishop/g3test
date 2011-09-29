@@ -1,18 +1,21 @@
-#ifndef VERTEXARRAY_HPP_
-#define VERTEXARRAY_HPP_
+#ifndef G3TEST_VERTEXARRAY_HPP_
+#define G3TEST_VERTEXARRAY_HPP_
 
+#define GL3_PROTOTYPES
 #include <GL3/gl3.h>
+
+#include "../Debug/console.h"
 
 const GLfloat CUBE_SIZE = 1.0f;
 
 class VertexArray {
    public:
-      VertexBufferObject() {
+      VertexArray() {
          glGenVertexArrays(1, &array_);
          
       }
       
-      ~VertexBufferObject() {
+      ~VertexArray() {
          glDeleteVertexArrays(1, &array_);
       }
       
@@ -24,4 +27,4 @@ class VertexArray {
       GLuint array_;
 };
 
-#endif /*  VERTEXARRAY_HPP_ */
+#endif /*  G3TEST_VERTEXARRAY_HPP_ */

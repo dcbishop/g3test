@@ -1,31 +1,11 @@
-#ifndef SFMLTEST_FILESYSTEM_HPP_
-#define SFMLTEST_FILESYSTEM_HPP_
+#ifndef G3TEST_FILESYSTEM_HPP_
+#define G3TEST_FILESYSTEM_HPP_
 
 #include <iostream>
 #include <string>
-using namespace std;
+#include <vector>
 
-#include <boost/filesystem.hpp>
-using namespace boost::filesystem;
+std::string findImageFile(const std::string& filename);
+std::vector<char> readIntoVector(const std::string& filename);
 
-#include "../Debug/console.h"
-
-const static string data_paths[] = {"./Data", "../Data", "", "../", "~/.sfmltest/Data", "/usr/local/games/sfmltest", "/usr/shared/sfmltest/Data", "/usr/shared/games/sfmltest/Data"};
-
-string findImageFile(const string& filename) {
-   path p;
-
-   for(int i = 0; i < sizeof(data_paths) / sizeof(string*); i++) {
-      p = data_paths[i];
-      p /= "Images";
-      p /= filename;
-
-      if(exists(p)) {
-         return p.string();
-      }
-   }
-
-   return "" + filename;
-}
-
-#endif /* SFMLTEST_FILESYSTEM_HPP_ */
+#endif /* G3TEST_FILESYSTEM_HPP_ */

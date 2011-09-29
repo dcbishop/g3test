@@ -18,7 +18,6 @@
 #include <stdarg.h>
 #include <string.h>
 
-
 void logit(const char* format, ...) {
    char prefix[] = "LOG";
    const char* colour = COLOUR_LIGHT_GREEN;

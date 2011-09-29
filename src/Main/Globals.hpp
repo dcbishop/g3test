@@ -1,5 +1,5 @@
-#ifndef SFMLTEST_GLOBALS_HPP_
-#define SFMLTEST_GLOBALS_HPP_
+#ifndef G3TEST_GLOBALS_HPP_
+#define G3TEST_GLOBALS_HPP_
 
 #include <string>
 using namespace std;
@@ -24,4 +24,4 @@ class Globals {
 
 extern Globals g;
 
-#endif /* SFMLTEST_GLOBALS_HPP_ */
+#endif /* G3TEST_GLOBALS_HPP_ */

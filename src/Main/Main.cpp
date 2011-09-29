@@ -4,12 +4,12 @@ using namespace std;
 #include "Globals.hpp"
 #include "../Debug/console.h"
 
-#include "Application.hpp"
+#include "GLUTApplication.hpp"
 
 int main(int argc, char* argv[]) {
-   LOG("Starting %s %s, build: %s...", argv[0], g.getGitVersion().c_str(), g.getBuildDate().c_str());
+   LOG("Starting %s %s, built: %s...", argv[0], g.getGitVersion().c_str(), g.getBuildDate().c_str());
 
-   Application app;
+   GLUTApplication app(argc, argv);
    app.run();
 
    LOG("Finished...");

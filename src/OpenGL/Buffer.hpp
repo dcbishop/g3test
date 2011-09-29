@@ -1,20 +1,84 @@
 #ifndef G3_BUFFER_HPP_
 #define G3_BUFFER_HPP_
 
+#define GL3_PROTOTYPES
 #include <GL3/gl3.h>
 
 class Buffer {
    public:
-      Buffer() {
-   		glGenBuffers(1, &buffer_);
-   	}
+      enum Usage {
+         StaticDraw = GL_STATIC_DRAW,
+         StaticRead = GL_STATIC_READ,
+         StaticCopy = GL_STATIC_COPY,
+         DynamicDraw = GL_DYNAMIC_DRAW,
+         DynamicRead = GL_DYNAMIC_READ,
+         DynamicCopy = GL_DYNAMIC_COPY,
+         StreamDraw = GL_STREAM_DRAW,
+         StreamRead = GL_STREAM_READ,
+         StreamCopy = GL_STREAM_COPY
+      };
 
-   	~Buffer() {
-   	   glDeleteBuffers(1, &buffer_);
+      enum Target {
+         Array = GL_ARRAY_BUFFER,
+         AtomicCounter = GL_ATOMIC_COUNTER_BUFFER,
+         CopyRead = GL_COPY_READ_BUFFER,
+         CopyWrite = GL_COPY_WRITE_BUFFER,
+         DrawIndirect = GL_DRAW_INDIRECT_BUFFER,
+         ElementArray = GL_ELEMENT_ARRAY_BUFFER,
+         PixelPack = GL_PIXEL_PACK_BUFFER,
+         PixelUnpack = GL_PIXEL_UNPACK_BUFFER,
+         Texture = GL_TEXTURE_BUFFER,
+         TransformFeedback = GL_TRANSFORM_FEEDBACK_BUFFER,
+         Uniform = GL_UNIFORM_BUFFER
+      };
+
+      Buffer() {
+         glGenBuffers(1, &buffer_id_);
+         target_ = Array;
+         usage_ = StaticDraw;
+      }
+
+      ~Buffer() {
+         glDeleteBuffers(1, &buffer_id_);
+      }
+
+      void setTarget(const Target target) {
+         target_ = target;
+      }
+
+      void bind() {
+         bind(target_);
+      }
+
+      void bind(const Target target) {
+         glBindBuffer(target, buffer_id_);
+      }
+
+      void data(const Target target, const GLsizei size, const void* data, const Usage usage=StaticDraw) {
+         bufferData_(target, size, data, usage);
+      }
+
+      void data(const GLsizei size, const void* data, const Usage usage=StaticDraw) {
+         bufferData_(target_, size, data, usage);
+      }
+
+      GLsizei getSize() const {
+         return size_;
       }
 
    private:
-      GLuint buffer_;
+      void bufferData_(const Target target, const GLsizei size, const void* data, const Usage usage=StaticDraw) {
+         bind();
+         size_ = size;
+         target_ = target;
+         usage_ = usage;
+         glBufferData(target, size, data, usage);
+      }
+
+      GLuint buffer_id_;
+      Target target_;
+      GLsizei size_;
+      Usage usage_;
 };
 
 #endif /* G3_BUFFER_HPP_ */
