@@ -27,6 +27,7 @@ class DemoScene {
       GLMatrixStack stack_;
       GLint mvp_loc_;
       GLint mv_loc_;
+      GLint nm_loc_;
 };
 
 #endif /* G3TEST_DEMOSCENE_HPP_ */

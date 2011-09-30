@@ -41,10 +41,13 @@ class Program {
       void uniformMatrix(const glm::mat4& matrix, const GLuint index) {
          glUniformMatrix4fv(index, 1, GL_FALSE, &matrix[0][0]);
          logGLError();
-         /*GLint current;
-         glGetIntegerv(GL_CURRENT_PROGRAM, &current);
-         DEBUG_M("%d == %d", program_id_, current);*/
       }
+
+      void uniformMatrix(const glm::mat3& matrix, const GLuint index) {
+         glUniformMatrix3fv(index, 1, GL_FALSE, &matrix[0][0]);
+         logGLError();
+      }
+
 
       void link() {
          glLinkProgram(program_id_);

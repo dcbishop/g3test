@@ -55,6 +55,8 @@ DemoScene::DemoScene(const int width, const int height) {
    logGLError();
    mvp_loc_ = program_.getUniformLocation(UniformName::ModelViewProjectionMatrix);
    logGLError();
+   nm_loc_ = program_.getUniformLocation(UniformName::NormalMatrix);
+   logGLError();
    setSize(width, height);
 }
 
@@ -72,6 +74,7 @@ void DemoScene::bindMatrices_() {
    glm::mat4 mvp_matrix = projection_matrix_ * stack_.getMatrix();
    program_.uniformMatrix(mvp_matrix, mvp_loc_);
    program_.uniformMatrix(stack_.getMatrix(), mv_loc_);
+   program_.uniformMatrix(stack_.getNormalMatrix(), nm_loc_);
 }
 
 void DemoScene::setSize(const int width, const int height) {
