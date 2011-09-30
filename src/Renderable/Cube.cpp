@@ -42,17 +42,25 @@ void Cube::init() {
    vec3 nb(0.0f, 0.0f, -1.0f);
    vec3 nu(0.0f, 1.0f, 0.0f);
    vec3 nd(0.0f, -1.0f, 0.0f);
-   vec3 nl(-1.0, 0.0f, 0.0f);
-   vec3 nr(1.0, 0.0f, 0.0f);
+   vec3 nl(-1.0f, 0.0f, 0.0f);
+   vec3 nr(1.0f, 0.0f, 0.0f);
+
+   // Colors
+   vec3 red       (1.0f, 0.0f, 0.0f);
+   vec3 green     (0.0f, 1.0f, 0.0f);
+   vec3 blue      (0.0f, 0.0f, 1.0f);
+   vec3 yellow    (1.0f, 1.0f, 0.0f);
+   vec3 cyan      (0.0f, 1.0f, 1.0f);
+   vec3 magenta   (1.0f, 0.0f, 1.0f);
 
    // C++11 only!
    vector<vec3> vertices {
-      rtf, ltf, lbf, rbf, rtf, lbf, // Front
-      rtb, lbb, ltb, rbb, lbb, rtb, // Back
-      ltf, ltb, lbb, ltf, lbb, lbf, // Left 
-      rtb, rtf, rbf, rbb, rtb, rbf, // Right
-      ltf, rtf, rtb, rtb, ltb, ltf, // Top
-      rbb, rbf, lbf, lbf, lbb, rbb  // Bottom
+      rtf, nf, red, ltf, nf, red, lbf, nf, red, rbf, nf, red, rtf, nf, red, lbf, nf, red, // Front
+      rtb, nb, green, lbb, nb, green, ltb, nb, green, rbb, nb, green, lbb, nb, green, rtb, nb, green, // Back
+      ltf, nl, blue, ltb, nl, blue, lbb, nl, blue, ltf, nl, blue, lbb, nl, blue, lbf, nl, blue, // Left 
+      rtb, nr, yellow, rtf, nr, yellow, rbf, nr, yellow, rbb, nr, yellow, rtb, nr, yellow, rbf, nr, yellow, // Right
+      ltf, nu, cyan, rtf, nu, cyan, rtb, nu, cyan, rtb, nu, cyan, ltb, nu, cyan, ltf, nu, cyan, // Top
+      rbb, nd, magenta, rbf, nd, magenta, lbf, nd, magenta, lbf, nd, magenta, lbb, nd, magenta, rbb, nd, magenta // Bottom
    };
 
    array_.bind();
@@ -60,9 +68,14 @@ void Cube::init() {
    buffer_.bind();
    logGLError();
    buffer_.data(vertices.size()*sizeof(vec3), &vertices[0][0]);
-   glVertexAttribPointer(AttributeIndex::Vertex, 3, GL_FLOAT, GL_FALSE, 0, 0);
+   glVertexAttribPointer(AttributeIndex::Vertex, 3, GL_FLOAT, GL_FALSE, sizeof(vec3)*3, 0);
+   glVertexAttribPointer(AttributeIndex::Normal, 3, GL_FLOAT, GL_FALSE, sizeof(vec3)*3, (char*)(sizeof(vec3)));
+   glVertexAttribPointer(AttributeIndex::Color, 3, GL_FLOAT, GL_FALSE, sizeof(vec3)*3, (char*)((sizeof(vec3))*2));
+
    logGLError();
    glEnableVertexAttribArray(AttributeIndex::Vertex);
+   glEnableVertexAttribArray(AttributeIndex::Normal);
+   glEnableVertexAttribArray(AttributeIndex::Color);
    logGLError();
    isInitilized_ = true;
 }

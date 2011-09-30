@@ -28,4 +28,5 @@ void main() {
       float fspec = pow(spec, 128.0);
       FragColor.rgb += vec3(fspec, fspec, fspec);
    }
+   FragColor = FlatColor;
 }

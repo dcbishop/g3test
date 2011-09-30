@@ -61,7 +61,7 @@ DemoScene::DemoScene(const int width, const int height) {
 void DemoScene::render() {
    stack_.loadIdentity();
    stack_.pushMatrix();
-   stack_.rotate(cube_rotation_, 0.0f, -1.0f, 0.0f);
+   stack_.rotate(cube_rotation_, 0.0f, 1.0f, 0.0f);
    bindMatrices_();
    cube_->render();
    stack_.popMatrix();

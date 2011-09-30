@@ -36,6 +36,7 @@ namespace AttributeIndex {
 
 namespace AttributeName {
    static const GLchar* Vertex = "Position";
+   static const GLchar* Position = "Position";
    static const GLchar* Normal = "Normal";
    static const GLchar* Color = "Color";
 }
