@@ -1,58 +1,60 @@
-#include "Application.hpp"
+#include "SFMLApplication.hpp"
 
-#include <GL3/gl3.h>
+#include "../OpenGL/OpenGL.hpp"
 
 #include "Filesystem.hpp"
 
-Application::Application() {
+#include "../Renderable/DemoScene.hpp"
+
+SFMLApplication::SFMLApplication() {
    LOG("Constructing SFML Application...");
 
    window_ = new sf::RenderWindow(sf::VideoMode(800, 600, 32), "SFML Window");
    window_->EnableVerticalSync(true);
 
-   /*const GLubyte* gl_version = glGetString(GL_VERSION);
-   LOG("OpenGL version: \"%s\".", gl_version);*/
-   LOG("SFML OpenGL version: %d.%d", window_->GetSettings().MajorVersion, window_->GetSettings().MinorVersion);
+   LOG("SFML v%d.%d, using OpenGL v%d.%d", SFML_VERSION_MAJOR, SFML_VERSION_MINOR, window_->GetSettings().MajorVersion, window_->GetSettings().MinorVersion);
+
+   demo_scene_ = new DemoScene();
 }
 
-void Application::run() {
+SFMLApplication::~SFMLApplication() {
+   delete(demo_scene_);
+}
+
+void SFMLApplication::run() {
    LOG("Entering main loop...");
 
-   sf::Texture texture;
-   if(!texture.LoadFromFile(findImageFile("Stone_Bricks_01.png"))) {
-      // 
-   }
-
-   sprite_.Move(32, 32);
-   sprite_.SetTexture(texture);
-
+   sf::Clock clock;
+   
    isRunning_ = true;
    while(isRunning_) {
       processEvents_();
+      demo_scene_->update(clock.GetElapsedTime()/1000.0f);
+      clock.Reset();
       render_();
    }
 
    LOG("Exiting main loop...");
 }
 
-void Application::processEvents_() {
+void SFMLApplication::processEvents_() {
    sf::Event Event;
-   /*while(window_->GetEvent(Event)) {
+
+   while(window_->PollEvent(Event)) {
       // Window closed
       if(Event.Type == sf::Event::Closed) {
          isRunning_ = false;
       }
 
       // Escape key pressed
-      if((Event.Type == sf::Event::KeyPressed) && (Event.Key.Code == sf::Key::Escape)) {
+      if((Event.Type == sf::Event::KeyPressed) && (Event.Key.Code == sf::Keyboard::Escape)) {
          isRunning_ = false;
       }
-   }*/
+   }
 }
 
-void Application::render_() {
-   window_->Clear();
-   window_->Draw(sprite_);
+void SFMLApplication::render_() {
+   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+   demo_scene_->render();
    window_->Display();
-   
 }

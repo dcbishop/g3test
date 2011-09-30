@@ -1,12 +1,15 @@
-#ifndef SFMLTEST_APPLICATION_HPP_
-#define SFMLTEST_APPLICATION_HPP_
+#ifndef G3TEST_SFMLAPPLICATION_HPP_
+#define G3TEST_SFMLAPPLICATION_HPP_
 
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 
-class Application {
+class DemoScene;
+
+class SFMLApplication {
    public:
-      Application();
+      SFMLApplication();
+      ~SFMLApplication();
       void run();
 
    private:
@@ -14,8 +17,8 @@ class Application {
       void render_();
 
       sf::RenderWindow* window_;
-      sf::Sprite sprite_;
       bool isRunning_;
+      DemoScene* demo_scene_;
 };
 
-#endif /* SFMLTEST_APPLICATION_HPP_ */
+#endif /* G3TEST_SFMLAPPLICATION_HPP_ */

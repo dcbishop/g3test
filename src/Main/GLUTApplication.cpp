@@ -32,7 +32,6 @@ GLUTApplication::~GLUTApplication() {
 }
 
 void GLUTApplication::run() {
-   glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
    glutMainLoop();
 }
 
