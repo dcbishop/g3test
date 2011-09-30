@@ -29,6 +29,22 @@ std::string findImageFile(const std::string& filename) {
    return "" + filename;
 }
 
+std::string findShaderFile(const std::string& filename) {
+   path p;
+
+   for(int i = 0; i < sizeof(data_paths) / sizeof(string*); ++i) {
+      p = data_paths[i];
+      p /= "Shaders";
+      p /= filename;
+
+      if(exists(p)) {
+         return p.string();
+      }
+   }
+
+   return "" + filename;
+}
+
 std::vector<char> readIntoVector(const std::string& filename) {
    ifstream file(filename.c_str());
    if(!file.is_open()) {

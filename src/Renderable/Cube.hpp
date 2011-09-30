@@ -1,13 +1,9 @@
 #ifndef G3TEST_CUBE_HPP_
 #define G3TEST_CUBE_HPP_
 
-#include <vector>
-using std::vector;
-
 #include <glm/glm.hpp>
 
-#define GL3_PROTOTYPES
-#include <GL3/gl3.h>
+#include "../OpenGL/OpenGL.hpp"
 #include <GL/freeglut.h>
 
 #include "../OpenGL/VertexArray.hpp"

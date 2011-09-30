@@ -1,9 +1,6 @@
 #ifndef G3_BUFFER_HPP_
 #define G3_BUFFER_HPP_
 
-#define GL3_PROTOTYPES
-#include <GL3/gl3.h>
-
 class Buffer {
    public:
       enum Usage {
@@ -34,12 +31,14 @@ class Buffer {
 
       Buffer() {
          glGenBuffers(1, &buffer_id_);
+         logGLError();
          target_ = Array;
          usage_ = StaticDraw;
       }
 
       ~Buffer() {
          glDeleteBuffers(1, &buffer_id_);
+         logGLError();
       }
 
       void setTarget(const Target target) {
@@ -48,10 +47,12 @@ class Buffer {
 
       void bind() {
          bind(target_);
+         logGLError();
       }
 
       void bind(const Target target) {
          glBindBuffer(target, buffer_id_);
+         logGLError();
       }
 
       void data(const Target target, const GLsizei size, const void* data, const Usage usage=StaticDraw) {
@@ -73,6 +74,7 @@ class Buffer {
          target_ = target;
          usage_ = usage;
          glBufferData(target, size, data, usage);
+         logGLError();
       }
 
       GLuint buffer_id_;

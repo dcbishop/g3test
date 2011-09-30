@@ -6,6 +6,7 @@
 #include <vector>
 
 std::string findImageFile(const std::string& filename);
+std::string findShaderFile(const std::string& filename);
 std::vector<char> readIntoVector(const std::string& filename);
 
 #endif /* G3TEST_FILESYSTEM_HPP_ */

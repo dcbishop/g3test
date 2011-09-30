@@ -1,10 +1,10 @@
 #include "Cube.hpp"
 
+#include <vector>
+using std::vector;
+
+
 #include "../Debug/console.h"
-
-#include "../OpenGL/Shader.hpp"
-#include "../OpenGL/Program.hpp"
-
 
 bool Cube::isInitilized_ = false;
 
@@ -12,7 +12,7 @@ Cube::Cube() {
    if(!isInitilized_) {
       init();
    }
-   
+   logGLError();
 }
 
 Cube::~Cube() {
@@ -52,16 +52,19 @@ void Cube::init() {
       ltf, ltb, lbb, ltf, lbb, lbf, // Left 
       rtb, rtf, rbf, rbb, rtb, rbf, // Right
       ltf, rtf, rtb, rtb, ltb, ltf, // Top
-      rbb, rbf, lbf, lbf, lbb, rbb // Bottom
+      rbb, rbf, lbf, lbf, lbb, rbb  // Bottom
    };
 
+   array_.bind();
+   logGLError();
    buffer_.bind();
+   logGLError();
    buffer_.data(vertices.size()*sizeof(vec3), &vertices[0][0]);
-
+   glVertexAttribPointer(AttributeIndex::Vertex, 3, GL_FLOAT, GL_FALSE, 0, 0);
+   logGLError();
+   glEnableVertexAttribArray(AttributeIndex::Vertex);
+   logGLError();
    isInitilized_ = true;
-   
-   Shader vertex_shader_(Shader::Vertex);
-   Program program_;
 }
 
 void Cube::deinit() {
@@ -69,9 +72,9 @@ void Cube::deinit() {
 }
 
 void Cube::render() {
-   int shaderAtribute = 0; // TODO: Bind to vertex shader, 0 is legacy fixed function
-   buffer_.bind();
-   glVertexAttribPointer(shaderAtribute, 3, GL_FLOAT, GL_FALSE, 0, 0);  
-   glEnableVertexAttribArray(shaderAtribute);
+   logGLError();
+   array_.bind();
+   logGLError();
    glDrawArrays(GL_TRIANGLES, 0, buffer_.getSize());
+   logGLError();
 }

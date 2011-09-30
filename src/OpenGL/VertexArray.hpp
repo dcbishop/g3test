@@ -1,8 +1,7 @@
 #ifndef G3TEST_VERTEXARRAY_HPP_
 #define G3TEST_VERTEXARRAY_HPP_
 
-#define GL3_PROTOTYPES
-#include <GL3/gl3.h>
+#include "OpenGL.hpp"
 
 #include "../Debug/console.h"
 

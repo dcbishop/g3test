@@ -15,8 +15,7 @@
 #ifndef GLMMATRIXSTACK_HPP_
 #define GLMMATRIXSTACK_HPP_
 
-#define GL3_PROTOTYPES
-#include <GL3/gl3.h>
+#include "OpenGL.hpp"
 
 #include <stack>
 

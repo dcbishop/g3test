@@ -1,7 +1,6 @@
 #include "GLUTApplication.hpp"
 
-#define GL3_PROTOTYPES
-#include <GL3/gl3.h>
+#include "../OpenGL/OpenGL.hpp"
 #include <GL/freeglut.h>
 
 #include <boost/date_time/posix_time/posix_time.hpp>
@@ -18,8 +17,8 @@ GLUTApplication::GLUTApplication(int& argc, char* argv[]) {
    glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH);
    glutInitContextVersion(3, 3);
    glutInitContextFlags(GLUT_FORWARD_COMPATIBLE | GLUT_DEBUG);
-   /*glutInitContextProfile(GLUT_CORE_PROFILE);*/
-   glutInitContextProfile(GLUT_COMPATIBILITY_PROFILE);
+   //glutInitContextProfile(GLUT_COMPATIBILITY_PROFILE);
+   glutInitContextProfile(GLUT_CORE_PROFILE);
    //glutIdleFunc(idle_);
    glutDisplayFunc(render_);
    glutReshapeFunc(resize_);

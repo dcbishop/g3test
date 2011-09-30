@@ -1,6 +1,6 @@
 #version 330
 
-in vec2 MCposition;
+in vec2 Position;
 in float LightIntensity;
 
 smooth in vec4 FlatColor;
