@@ -11,6 +11,8 @@ using std::string;
 #include "../Debug/console.h"
 
 DemoScene::DemoScene(const int width, const int height) {
+   using namespace ResourceManager;
+
    cube_ = new Cube();
    cube_rotation_ = 45.0f;
 

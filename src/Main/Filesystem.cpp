@@ -1,55 +1,71 @@
 #include "Filesystem.hpp"
 
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <vector>
-using namespace std;
-
-#include <boost/filesystem.hpp>
-using namespace boost::filesystem;
-
 #include "../Debug/console.h"
 
-const static string data_paths[] = {"./Data", "../Data", "", "../", "~/.sfmltest/Data", "/usr/local/games/sfmltest", "/usr/shared/sfmltest/Data", "/usr/shared/games/sfmltest/Data"};
+using namespace boost::filesystem;
+using namespace std;
 
-std::string findImageFile(const std::string& filename) {
-   path p;
+namespace ResourceManager {
+   static const vector<string> data_paths = {"./Data", "../Data", "", "../", "~/.sfmltest/Data", "/usr/local/games/sfmltest", "/usr/shared/sfmltest/Data", "/usr/shared/games/sfmltest/Data"};   
 
-   for(int i = 0; i < sizeof(data_paths) / sizeof(string*); ++i) {
-      p = data_paths[i];
-      p /= "Images";
-      p /= filename;
+   vector<path> findDataPaths() {
+      path p;
 
-      if(exists(p)) {
-         return p.string();
+      vector<path> valid_paths;
+
+      // Note: C++11 only! Range-based for-loop
+      for(const string &check_path : data_paths) {
+         p = check_path;
+         p /= "Data";
+
+         if(exists(p) && is_directory(p)) {
+            valid_paths.push_back(check_path);
+         }
       }
+
+      return valid_paths;
    }
 
-   return "" + filename;
-}
+   string findImageFile(const string& filename) {
+      path p;
 
-std::string findShaderFile(const std::string& filename) {
-   path p;
+      // Note: C++11 only! Range-based for-loop
+      for(const string &check_path : data_paths) {
+         p = check_path;
+         p /= "Images";
+         p /= filename;
 
-   for(int i = 0; i < sizeof(data_paths) / sizeof(string*); ++i) {
-      p = data_paths[i];
-      p /= "Shaders";
-      p /= filename;
-
-      if(exists(p)) {
-         return p.string();
+         if(exists(p)) {
+            return p.string();
+         }
       }
+
+      return "" + filename;
    }
 
-   return "" + filename;
-}
+   string findShaderFile(const string& filename) {
+      path p;
 
-std::vector<char> readIntoVector(const std::string& filename) {
-   ifstream file(filename.c_str());
-   if(!file.is_open()) {
-      ERROR("Could not open '%s'", filename.c_str());
-      throw "Badness!";
+      // Note: C++11 only! Range-based for-loop
+      for(const string &check_path : data_paths) {
+         p = check_path;
+         p /= "Shaders";
+         p /= filename;
+
+         if(exists(p)) {
+            return p.string();
+         }
+      }
+
+      return "" + filename;
    }
-   return vector<char>(istreambuf_iterator<char>(file), istreambuf_iterator<char>());
+
+   vector<char> readIntoVector(const string& filename) {
+      ifstream file(filename.c_str());
+      if(!file.is_open()) {
+         ERROR("Could not open '%s'", filename.c_str());
+         throw "Badness!";
+      }
+      return vector<char>(istreambuf_iterator<char>(file), istreambuf_iterator<char>());
+   }
 }
