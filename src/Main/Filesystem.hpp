@@ -13,9 +13,9 @@ namespace ResourceManager {
    using boost::filesystem::path;
    
    vector<path> findDataPaths();
-   string findImageFile(const string& filename);
-   string findShaderFile(const string& filename);
-   vector<char> readIntoVector(const string& filename);
+   path findImageFile(const path& filename);
+   path findShaderFile(const path& filename);
+   vector<char> readIntoVector(const path& filename);
 
    //static const vector<string> data_paths;
 }

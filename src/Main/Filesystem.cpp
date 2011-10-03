@@ -6,7 +6,8 @@ using namespace boost::filesystem;
 using namespace std;
 
 namespace ResourceManager {
-   static const vector<string> data_paths = {"./Data", "../Data", "", "../", "~/.sfmltest/Data", "/usr/local/games/sfmltest", "/usr/shared/sfmltest/Data", "/usr/shared/games/sfmltest/Data"};   
+   const vector<path> hardcoded_data_paths = {"", "../", "~/.sfmltest/Data", "/usr/local/games/sfmltest", "/usr/shared/sfmltest/", "/usr/shared/games/sfmltest/"};   
+   const vector<path> data_paths = findDataPaths();
 
    vector<path> findDataPaths() {
       path p;
@@ -14,23 +15,23 @@ namespace ResourceManager {
       vector<path> valid_paths;
 
       // Note: C++11 only! Range-based for-loop
-      for(const string &check_path : data_paths) {
+      for(const path &check_path : hardcoded_data_paths) {
          p = check_path;
          p /= "Data";
 
          if(exists(p) && is_directory(p)) {
-            valid_paths.push_back(check_path);
+            valid_paths.push_back(p);
          }
       }
 
       return valid_paths;
    }
 
-   string findImageFile(const string& filename) {
+   path findImageFile(const path& filename) {
       path p;
 
       // Note: C++11 only! Range-based for-loop
-      for(const string &check_path : data_paths) {
+      for(const path &check_path : data_paths) {
          p = check_path;
          p /= "Images";
          p /= filename;
@@ -40,14 +41,14 @@ namespace ResourceManager {
          }
       }
 
-      return "" + filename;
+      return filename;
    }
 
-   string findShaderFile(const string& filename) {
+   path findShaderFile(const path& filename) {
       path p;
 
       // Note: C++11 only! Range-based for-loop
-      for(const string &check_path : data_paths) {
+      for(const path &check_path : data_paths) {
          p = check_path;
          p /= "Shaders";
          p /= filename;
@@ -57,10 +58,10 @@ namespace ResourceManager {
          }
       }
 
-      return "" + filename;
+      return filename;
    }
 
-   vector<char> readIntoVector(const string& filename) {
+   vector<char> readIntoVector(const path& filename) {
       ifstream file(filename.c_str());
       if(!file.is_open()) {
          ERROR("Could not open '%s'", filename.c_str());

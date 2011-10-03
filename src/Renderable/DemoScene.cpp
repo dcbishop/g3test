@@ -1,9 +1,9 @@
 #include "DemoScene.hpp"
-#include "Cube.hpp"
 
 #include <string>
 using std::string;
 
+#include "../Renderable/Cube.hpp"
 #include "../Main/Filesystem.hpp"
 #include "../OpenGL/OpenGL.hpp"
 #include "../OpenGL/Shader.hpp"
@@ -22,16 +22,14 @@ DemoScene::DemoScene(const int width, const int height) {
    glEnable(GL_CULL_FACE);
    
    // Load the vertex shader
-   string vertex_filename = findShaderFile("Basic.vert");
-   auto vertex_source = readIntoVector(vertex_filename);
+   auto vertex_source = readIntoVector(findShaderFile("Basic.vert"));
    static Shader vertex_shader(Shader::Vertex, vertex_source);
    vertex_shader.compile();
    logGLError();
    vertex_shader.debugLog();
 
    // Load the fragment shader
-   string fragment_filename = findShaderFile("Basic.frag");
-   auto fragment_source = readIntoVector(fragment_filename);
+   auto fragment_source = readIntoVector(findShaderFile("Basic.frag"));
    static Shader fragment_shader(Shader::Fragment, fragment_source);
    fragment_shader.compile();
    logGLError();
