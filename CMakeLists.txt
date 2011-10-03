@@ -32,6 +32,9 @@ file(GLOB_RECURSE SOURCES "${CMAKE_SOURCE_DIR}/src/*.cpp")
 # SFML
 FIND_PACKAGE(SFML REQUIRED COMPONENTS System Window Graphics) 
 
+# GLFW
+find_package(GLFW REQUIRED)
+
 # OpenGL
 find_package(OpenGL REQUIRED)
 find_package(GLUT REQUIRED)
@@ -45,4 +48,4 @@ add_definitions(-D_BOOSTPTR)
 
 # Final target
 add_executable(${PROJECT_NAME} ${SOURCES})
-target_link_libraries(${PROJECT_NAME} ${SFML_LIBRARIES} ${Boost_LIBRARIES} ${OPENGL_LIBRARIES} ${GLUT_LIBRARY})
+target_link_libraries(${PROJECT_NAME} ${SFML_LIBRARIES} ${Boost_LIBRARIES} ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} ${GLFW_LIBRARIES})
