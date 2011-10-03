@@ -31,6 +31,7 @@ class Buffer {
 
       Buffer() {
          glGenBuffers(1, &buffer_id_);
+         DEBUG_M("Created buffer %d", buffer_id_);
          logGLError();
          target_ = Array;
          usage_ = StaticDraw;
@@ -51,8 +52,14 @@ class Buffer {
       }
 
       void bind(const Target target) {
+         DEBUG_M("Binding buffer %d", buffer_id_);
          glBindBuffer(target, buffer_id_);
+         target_ = target;
          logGLError();
+      }
+      
+      void unbind() {
+         glBindBuffer(target_, 0);
       }
 
       void data(const Target target, const GLsizei size, const void* data, const Usage usage=StaticDraw) {

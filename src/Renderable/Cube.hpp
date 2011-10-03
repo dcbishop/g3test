@@ -19,6 +19,7 @@ class Cube {
 
    private:
       glm::vec3 position_;
+      glm::vec4 rotation_;
       VertexArray array_;
       Buffer buffer_;
       static bool isInitilized_;

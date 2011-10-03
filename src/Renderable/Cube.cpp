@@ -82,6 +82,13 @@ void Cube::init() {
 
 void Cube::deinit() {
    isInitilized_ = false;
+   array_.bind();
+   buffer_.bind();
+   glDisableVertexAttribArray(AttributeIndex::Vertex);
+   glDisableVertexAttribArray(AttributeIndex::Normal);
+   glDisableVertexAttribArray(AttributeIndex::Color);
+   buffer_.unbind();
+   array_.unbind();
 }
 
 void Cube::render() {

@@ -22,6 +22,10 @@ class VertexArray {
          glBindVertexArray(array_);
       }
 
+      static void unbind() {
+         glBindVertexArray(0);
+      }
+
    private:
       GLuint array_;
 };
