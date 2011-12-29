@@ -31,13 +31,14 @@ class Buffer {
 
       Buffer() {
          glGenBuffers(1, &buffer_id_);
-         DEBUG_M("Created buffer %d", buffer_id_);
+         DEBUG_M("Created buffer %d.", buffer_id_);
          logGLError();
          target_ = Array;
          usage_ = StaticDraw;
       }
 
       ~Buffer() {
+         DEBUG_M("Deconstructing buffer %s.", buffer_id_);
          glDeleteBuffers(1, &buffer_id_);
          logGLError();
       }
