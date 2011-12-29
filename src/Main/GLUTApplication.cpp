@@ -3,9 +3,9 @@
 #include "../OpenGL/OpenGL.hpp"
 #include <GL/freeglut.h>
 
-#include <boost/date_time/posix_time/posix_time.hpp>
-
 #include "../Renderable/DemoScene.hpp"
+
+#include <boost/date_time/posix_time/posix_time.hpp>
 
 #include "../Debug/console.h"
 
