@@ -18,7 +18,7 @@ void GLWidget::initializeGL() {
 }
 
 void GLWidget::resizeGL(int w, int h) {
-   glViewport(0,0,(GLint)w, (GLint)h);
+   demo_scene_->setSize(w, h);
    updateGL();
 }
 
