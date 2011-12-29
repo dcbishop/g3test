@@ -80,6 +80,7 @@ void DemoScene::bindMatrices_() {
 void DemoScene::setSize(const int width, const int height) {
    width_ = width;
    height_ = height;
+   glViewport(0, 0, width, height);
    projection_matrix_ = glm::perspective(90.0f, (float)1.0 * width_ / height_, 0.1f, 10000.0f);
    projection_matrix_ *= glm::lookAt(
       glm::vec3(0.0f, 0.0f, 2.0f),
