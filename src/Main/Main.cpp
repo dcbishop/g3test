@@ -7,6 +7,7 @@ using namespace std;
 #include "../Application/GLFWApplication.hpp"
 #include "../Application/GLUTApplication.hpp"
 #include "../Application/SFMLApplication.hpp"
+#include "../Application/QTApplication.hpp"
 
 int main(int argc, char* argv[]) {
    LOG("Starting %s %s, built: %s...", argv[0], g.getGitVersion().c_str(), g.getBuildDate().c_str());
@@ -15,7 +16,9 @@ int main(int argc, char* argv[]) {
    app.run();*/
    /*SFMLApplication app;
    app.run();*/
-   GLFWApplication app;
+   /*GLFWApplication app;
+   app.run();*/
+   QTApplication app(argc, argv);
    app.run();
 
    LOG("Finished...");

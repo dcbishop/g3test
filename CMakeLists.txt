@@ -35,6 +35,7 @@ FIND_PACKAGE(SFML REQUIRED COMPONENTS System Window Graphics)
 # GLFW
 find_package(GLFW REQUIRED)
 
+
 # OpenGL
 find_package(OpenGL REQUIRED)
 find_package(GLUT REQUIRED)
@@ -46,6 +47,11 @@ include_directories("${CMAKE_SOURCE_DIR}/external")
 find_package(Boost COMPONENTS filesystem system REQUIRED)
 add_definitions(-D_BOOSTPTR)
 
+# QT
+find_package(Qt4 4.6 COMPONENTS QtCore QtGui QtOpenGL QtWebKit REQUIRED)
+include(${QT_USE_FILE})
+QT4_WRAP_CPP(cppcollada_SRC ${qt_HPP})
+
 # Final target
 add_executable(${PROJECT_NAME} ${SOURCES})
-target_link_libraries(${PROJECT_NAME} ${SFML_LIBRARIES} ${Boost_LIBRARIES} ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} ${GLFW_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} ${GLEW_LIBRARIES} ${QT_LIBRARIES} ${SFML_LIBRARIES} ${Boost_LIBRARIES} ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} ${GLFW_LIBRARIES})
