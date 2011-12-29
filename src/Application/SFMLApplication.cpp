@@ -4,7 +4,7 @@
 
 #include "../Renderable/DemoScene.hpp"
 
-#include "Filesystem.hpp"
+#include "../Main/Filesystem.hpp"
 
 SFMLApplication::SFMLApplication() {
    LOG("Constructing SFML Application...");
