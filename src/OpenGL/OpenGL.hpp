@@ -21,16 +21,16 @@ namespace AttributeIndex {
       Vertex = 0,
       Normal = 2,
       Color = 3,
-      SecondaryColor = 3,
-      FogCoord = 3,
+      SecondaryColor = 4,
+      FogCoord = 5,
       MultiTextCoord0 = 8,
       MultiTextCoord1 = 9,
       MultiTextCoord2 = 10,
       MultiTextCoord3 = 11,
       MultiTextCoord4 = 12,
-      MultiTextCoord5 = 12,
-      MultiTextCoord6 = 12,
-      MultiTextCoord7 = 12
+      MultiTextCoord5 = 13,
+      MultiTextCoord6 = 14,
+      MultiTextCoord7 = 15
    };
 }
 
