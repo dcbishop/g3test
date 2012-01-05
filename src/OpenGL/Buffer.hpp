@@ -3,7 +3,7 @@
 
 class Buffer {
    public:
-      enum Usage {
+      enum Usage :GLenum {
          StaticDraw = GL_STATIC_DRAW,
          StaticRead = GL_STATIC_READ,
          StaticCopy = GL_STATIC_COPY,
@@ -15,7 +15,7 @@ class Buffer {
          StreamCopy = GL_STREAM_COPY
       };
 
-      enum Target {
+      enum Target :GLenum {
          Array = GL_ARRAY_BUFFER,
          AtomicCounter = GL_ATOMIC_COUNTER_BUFFER,
          CopyRead = GL_COPY_READ_BUFFER,
@@ -38,7 +38,7 @@ class Buffer {
       }
 
       ~Buffer() {
-         DEBUG_M("Deconstructing buffer %s.", buffer_id_);
+         DEBUG_M("Deconstructing buffer %d.", buffer_id_);
          glDeleteBuffers(1, &buffer_id_);
          logGLError();
       }
@@ -53,7 +53,7 @@ class Buffer {
       }
 
       void bind(const Target target) {
-         DEBUG_M("Binding buffer %d", buffer_id_);
+         DEBUG_H("Binding buffer %d", buffer_id_);
          glBindBuffer(target, buffer_id_);
          target_ = target;
          logGLError();

@@ -31,6 +31,7 @@ class Shader {
       void compile() {
          glCompileShader(shader_id_);
          logGLError();
+         debugLog();
       }
 
       void source(const std::vector<char>& source_code) {
@@ -39,15 +40,18 @@ class Shader {
       }
 
       void source(const char* source_code, const GLint size) {
+         DEBUG_M("Shader source.");
          glShaderSource(shader_id_, 1, (const GLchar**)&source_code, &size);
          has_source_ = true;
          logGLError();
+         debugLog();
       }
       
       void debugLog() {
          int length = 0;
          glGetShaderiv(shader_id_, GL_INFO_LOG_LENGTH, &length);
          if(length <= 0) {
+            DEBUG_M("No log");
             return;
          }
 

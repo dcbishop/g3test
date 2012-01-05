@@ -1,8 +1,8 @@
-#version 330 compatibility
+#version 330
 
-in      vec4 Position;
-in      vec3 Normal;
-in      vec3 Color;
+layout(location = 0) in vec4 Position;
+layout(location = 2) in vec3 Normal;
+layout(location = 3) in vec3 Color;
 
 uniform mat4 MVMatrix;
 uniform mat4 MVPMatrix;
@@ -18,8 +18,7 @@ struct light {
 };
 uniform light Lights[8];
 
-void main()
-{
+void main() {
    VaryingNormal = NormalMatrix * Normal;
    vec4 Position4 = MVMatrix * Position;
    vec3 Position3 = Position4.xyz / Position4.w;

@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <unordered_map>
 
 #define GL3_PROTOTYPES
 #include <GL3/gl3.h>
@@ -15,6 +16,8 @@
 #else
 #define logGLError()
 #endif /* _DEBUG */
+
+typedef std::unordered_map<GLenum, std::string> LookupNames;
 
 namespace AttributeIndex {
    enum AttributeIndex {

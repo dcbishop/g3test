@@ -26,5 +26,6 @@ void GLWidget::paintGL() {
    demo_scene_->update(timer_.restart()/1000.0f);
    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
    demo_scene_->render();
+   swapBuffers();
 }
 

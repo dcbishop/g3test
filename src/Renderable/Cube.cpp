@@ -95,6 +95,11 @@ void Cube::render() {
    logGLError();
    array_.bind();
    logGLError();
-   glDrawArrays(GL_TRIANGLES, 0, buffer_.getSize());
+   static int verticies_count = buffer_.getSize()/sizeof(glm::vec3)/3;
+   glDrawArrays(GL_TRIANGLES, 0, verticies_count);
+   // Cheap hack to draw wireframe
+   /*for(int i = 0; i < buffer_.getSize(); i += 3)
+      glDrawArrays(GL_LINE_LOOP, i, 3);*/
+
    logGLError();
 }
