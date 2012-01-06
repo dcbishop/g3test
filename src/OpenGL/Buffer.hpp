@@ -1,6 +1,9 @@
 #ifndef G3_BUFFER_HPP_
 #define G3_BUFFER_HPP_
 
+#include "OpenGL.hpp"
+#include <memory>
+
 class Buffer {
    public:
       enum Usage :GLenum {
@@ -29,66 +32,61 @@ class Buffer {
          Uniform = GL_UNIFORM_BUFFER
       };
 
-      Buffer() {
-         glGenBuffers(1, &buffer_id_);
-         DEBUG_M("Created buffer %d.", buffer_id_);
-         logGLError();
-         target_ = Array;
-         usage_ = StaticDraw;
-      }
-
-      ~Buffer() {
-         DEBUG_M("Deconstructing buffer %d.", buffer_id_);
-         glDeleteBuffers(1, &buffer_id_);
-         logGLError();
-      }
-
-      void setTarget(const Target target) {
-         target_ = target;
-      }
-
-      void bind() {
-         bind(target_);
-         logGLError();
-      }
-
-      void bind(const Target target) {
-         DEBUG_H("Binding buffer %d", buffer_id_);
-         glBindBuffer(target, buffer_id_);
-         target_ = target;
-         logGLError();
-      }
-      
-      void unbind() {
-         glBindBuffer(target_, 0);
-      }
-
-      void data(const Target target, const GLsizei size, const void* data, const Usage usage=StaticDraw) {
-         bufferData_(target, size, data, usage);
-      }
-
-      void data(const GLsizei size, const void* data, const Usage usage=StaticDraw) {
-         bufferData_(target_, size, data, usage);
-      }
-
-      GLsizei getSize() const {
-         return size_;
-      }
+      Buffer();
+      ~Buffer();
+      void setTarget(const Target target);
+      void bind();
+      void bind(const Target target);
+      void unbind();
+      void data(const Target target, const GLsizei size, const void* data, const Usage usage=StaticDraw);
+      void data(const GLsizei size, const void* data, const Usage usage=StaticDraw);
+      GLsizei getSize() const;
 
    private:
-      void bufferData_(const Target target, const GLsizei size, const void* data, const Usage usage=StaticDraw) {
-         bind();
-         size_ = size;
-         target_ = target;
-         usage_ = usage;
-         glBufferData(target, size, data, usage);
-         logGLError();
-      }
+      void bufferData_(const Target target, const GLsizei size, const void* data, const Usage usage=StaticDraw);
 
       GLuint buffer_id_;
       Target target_;
       GLsizei size_;
       Usage usage_;
 };
+typedef std::shared_ptr<Buffer> BufferPtr;
+
+inline void Buffer::bind() {
+   bind(target_);
+   logGLError();
+}
+
+inline void Buffer::bind(const Target target) {
+   DEBUG_H("Binding buffer %d", buffer_id_);
+   glBindBuffer(target, buffer_id_);
+   target_ = target;
+   logGLError();
+}
+
+inline void Buffer::unbind() {
+   glBindBuffer(target_, 0);
+}
+
+inline void Buffer::data(const Target target, const GLsizei size, const void* data, const Usage usage) {
+   bufferData_(target, size, data, usage);
+}
+
+inline void Buffer::data(const GLsizei size, const void* data, const Usage usage) {
+   bufferData_(target_, size, data, usage);
+}
+
+inline GLsizei Buffer::getSize() const {
+   return size_;
+}
+
+inline void Buffer::bufferData_(const Target target, const GLsizei size, const void* data, const Usage usage) {
+   bind();
+   size_ = size;
+   target_ = target;
+   usage_ = usage;
+   glBufferData(target, size, data, usage);
+   logGLError();
+}
 
 #endif /* G3_BUFFER_HPP_ */

@@ -24,7 +24,7 @@ void Cube::init() {
 
    position_ = vec3(0.0, 0.0, 0.0);
    
-   GLfloat p = CUBE_SIZE / 2.0f;
+   GLfloat p = 0.5f;
    GLfloat n = -p;
 
    // Vertices   

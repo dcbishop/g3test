@@ -11,7 +11,7 @@ uniform mat3 NormalMatrix;
 out vec2 PositionXY;
 smooth out vec3 VaryingNormal;
 smooth out vec3 VaryingLightDir;
-smooth out vec3 FlatColor;
+smooth out vec4 FlatColor;
 
 struct light {
    vec4 position;
@@ -25,6 +25,6 @@ void main() {
    VaryingLightDir = normalize(/*Lights[0].position.xyz*/ vec3(1.0, 1.0, 1.0) - Position3); // TODO: Bind lights
 
    gl_Position = MVPMatrix * Position;
-   FlatColor = Color;
+   FlatColor = vec4(Color, 1.0f);
    PositionXY = gl_Position.xy;
 }

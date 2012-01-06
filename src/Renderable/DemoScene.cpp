@@ -3,9 +3,10 @@
 #include <string>
 using std::string;
 
+#include "../Main/Globals.hpp"
 #include "../Renderable/Cube.hpp"
 #include "../Renderable/ErrorMesh.hpp"
-#include "../Main/Filesystem.hpp"
+#include "../Main/ResourceManager.hpp"
 #include "../OpenGL/OpenGL.hpp"
 #include "../OpenGL/Shader.hpp"
 #include "../OpenGL/Framebuffer.hpp"
@@ -15,8 +16,9 @@ using std::string;
 #include "../Debug/console.h"
 
 DemoScene::DemoScene(const int width, const int height) {
-   using namespace ResourceManager;
    using std::shared_ptr;
+
+   ResourceManager& rm = globals.getResourceManager();
 
    em_ = shared_ptr<ErrorMesh>(new ErrorMesh());
    //cube_ = shared_ptr<Cube>(new Cube());
@@ -26,51 +28,29 @@ DemoScene::DemoScene(const int width, const int height) {
    glClearDepth(10000.0f);
    glEnable(GL_CULL_FACE);
 
-   // Load the vertex shader
-   auto vertex_source = readIntoVector(findShaderFile("Basic.vert"));
-   static Shader vertex_shader(Shader::Vertex, vertex_source);
-   vertex_shader.compile();
+   // Load the vertex/fragment shader.
+   program_ = rm.getVFProgram("Basic.vert", "Basic.frag");
+   program_->debugLog();
    logGLError();
-   vertex_shader.debugLog();
-
-   // Load the fragment shader
-   auto fragment_source = readIntoVector(findShaderFile("Basic.frag"));
-   static Shader fragment_shader(Shader::Fragment, fragment_source);
-   fragment_shader.compile();
-   logGLError();
-   vertex_shader.debugLog();
-
-   // Make a shader program
-   program_.attach(vertex_shader);
-   program_.attach(fragment_shader);
-   
-   // Bind shader program attributes
-   /*program_.bindAttribLocation(AttributeIndex::Vertex, AttributeName::Vertex);
-   program_.bindAttribLocation(AttributeIndex::Normal, AttributeName::Normal);
-   program_.bindAttribLocation(AttributeIndex::Color, AttributeName::Color);*/
-   logGLError();
-
-   program_.link();
-   logGLError();
-   program_.use();
+   program_->use();
    logGLError();
 
    // Bind shader program uniform attributes
-   mv_loc_ = program_.getUniformLocation(UniformName::ModelViewMatrix);
+   mv_loc_ = program_->getUniformLocation(UniformName::ModelViewMatrix);
    logGLError();
-   mvp_loc_ = program_.getUniformLocation(UniformName::ModelViewProjectionMatrix);
+   mvp_loc_ = program_->getUniformLocation(UniformName::ModelViewProjectionMatrix);
    logGLError();
-   nm_loc_ = program_.getUniformLocation(UniformName::NormalMatrix);
+   nm_loc_ = program_->getUniformLocation(UniformName::NormalMatrix);
    logGLError();
    setSize(width, height);
 }
 
 void DemoScene::bindMatrices_() {
-   program_.use();
+   program_->use();
    glm::mat4 mvp_matrix = projection_matrix_ * stack_.getMatrix();
-   program_.uniformMatrix(mvp_matrix, mvp_loc_);
-   program_.uniformMatrix(stack_.getMatrix(), mv_loc_);
-   program_.uniformMatrix(stack_.getNormalMatrix(), nm_loc_);
+   program_->uniformMatrix(mvp_matrix, mvp_loc_);
+   program_->uniformMatrix(stack_.getMatrix(), mv_loc_);
+   program_->uniformMatrix(stack_.getNormalMatrix(), nm_loc_);
 }
 
 void DemoScene::setSize(const int width, const int height) {

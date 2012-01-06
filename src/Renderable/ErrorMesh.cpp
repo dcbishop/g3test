@@ -3,7 +3,16 @@
 #include <vector>
 #include <glm/glm.hpp>
 
+#include "../Main/Globals.hpp"
+#include "../Main/ResourceManager.hpp"
+
 bool ErrorMesh::isInitilized_ = false;
+unsigned int ErrorMesh::refs_ = 0;
+const unsigned int ErrorMesh::num_meshes_ = 3;
+
+std::vector<VertexArrayPtr> ErrorMesh::array_;
+std::vector<BufferPtr> ErrorMesh::vertices_buffer_;
+ProgramPtr ErrorMesh::program_;
 
 struct GLvec3 {
    GLfloat x;
@@ -13,11 +22,12 @@ struct GLvec3 {
 
 ErrorMesh::ErrorMesh() {
    if(!isInitilized_) {
-      init();
+      init_();
    }
+   refs_++;
 }
 
-void ErrorMesh::init() {
+void ErrorMesh::init_() {
    using glm::vec3;
    using std::vector;
 
@@ -5010,56 +5020,86 @@ void ErrorMesh::init() {
       { -0.039205, 0.398074, 0.025000 },
       { -0.049068, 0.998795, -0.000001 }
    };
+   
+   for(int i = 0; i < num_meshes_; i++) {
+      array_.push_back(VertexArrayPtr(new VertexArray()));
+      vertices_buffer_.push_back(BufferPtr(new Buffer()));
+   }
 
-   array_0.bind();
-   vertices_buffer_0.bind();
-   vertices_buffer_0.data(vertices_0.size()*sizeof(GLvec3), &vertices_0[0]);
+   array_[0]->bind();
+   vertices_buffer_[0]->bind();
+   vertices_buffer_[0]->data(vertices_0.size()*sizeof(GLvec3), &vertices_0[0]);
 
    glVertexAttribPointer(AttributeIndex::Vertex, 3, GL_FLOAT, GL_FALSE, sizeof(GLvec3)*2, 0);
    glVertexAttribPointer(AttributeIndex::Normal, 3, GL_FLOAT, GL_FALSE, sizeof(GLvec3)*2, (char*)(sizeof(vec3)));
    glEnableVertexAttribArray(AttributeIndex::Vertex);
    glEnableVertexAttribArray(AttributeIndex::Normal);
 
-   array_1.bind();
-   vertices_buffer_1.bind();
-   vertices_buffer_1.data(vertices_1.size()*sizeof(GLvec3), &vertices_1[0]);
+   array_[1]->bind();
+   vertices_buffer_[1]->bind();
+   vertices_buffer_[1]->data(vertices_1.size()*sizeof(GLvec3), &vertices_1[0]);
    glVertexAttribPointer(AttributeIndex::Vertex, 3, GL_FLOAT, GL_FALSE, sizeof(GLvec3)*2, 0);
    glVertexAttribPointer(AttributeIndex::Normal, 3, GL_FLOAT, GL_FALSE, sizeof(GLvec3)*2, (char*)(sizeof(vec3)));
    glEnableVertexAttribArray(AttributeIndex::Vertex);
    glEnableVertexAttribArray(AttributeIndex::Normal);
 
-   array_2.bind();
-   vertices_buffer_2.bind();
-   vertices_buffer_2.data(vertices_2.size()*sizeof(GLvec3), &vertices_2[0]);
+   array_[2]->bind();
+   vertices_buffer_[2]->bind();
+   vertices_buffer_[2]->data(vertices_2.size()*sizeof(GLvec3), &vertices_2[0]);
    glVertexAttribPointer(AttributeIndex::Vertex, 3, GL_FLOAT, GL_FALSE, sizeof(GLvec3)*2, 0);
    glVertexAttribPointer(AttributeIndex::Normal, 3, GL_FLOAT, GL_FALSE, sizeof(GLvec3)*2, (char*)(sizeof(vec3)));
    glEnableVertexAttribArray(AttributeIndex::Vertex);
    glEnableVertexAttribArray(AttributeIndex::Normal);
 
    logGLError();
+   
+   ResourceManager& rm = globals.getResourceManager();
+   program_ = rm.getVFProgram("Basic.vert", "Basic.frag");
 
    isInitilized_ = true;
 }
 
+void ErrorMesh::deinit_() {
+   for(int i = 0; i < num_meshes_; i++) {
+      vertices_buffer_[i]->unbind();
+      vertices_buffer_[i] = BufferPtr();
+      array_[i]->unbind();
+      array_[i] = VertexArrayPtr();
+   }
+   program_ = ProgramPtr();
+   isInitilized_ = false;
+}
+
 ErrorMesh::~ErrorMesh() {
+   DEBUG_M("Deconstructing ErrorMesh");
+   refs_--;
+   if(refs_ == 0) {
+      DEBUG_M("Last ErrorMesh destroyed, cleaning up.");
+      deinit_();
+   }
 }
 
 void ErrorMesh::render() {
    glDisable(GL_CULL_FACE);
 
-   static unsigned int number_of_triangles_0 = vertices_buffer_0.getSize()/sizeof(GLvec3);
-   static unsigned int number_of_triangles_1 = vertices_buffer_1.getSize()/sizeof(GLvec3);
-   static unsigned int number_of_triangles_2 = vertices_buffer_2.getSize()/sizeof(GLvec3);
+   static unsigned int number_of_triangles_0 = vertices_buffer_[0]->getSize()/sizeof(GLvec3);
+   static unsigned int number_of_triangles_1 = vertices_buffer_[1]->getSize()/sizeof(GLvec3);
+   static unsigned int number_of_triangles_2 = vertices_buffer_[2]->getSize()/sizeof(GLvec3);
 
-   array_0.bind();
+   const static glm::vec4 white_color(1.0f, 1.0f, 1.0f, 1.0f);
+   const static glm::vec4 red_color(1.0f, 0.0f, 0.0f, 1.0f);
+   const static GLuint color_loc = program_->getUniformLocation("color_overide");
+
+   program_->uniform(white_color, color_loc);
+   array_[0]->bind();
    glDrawArrays(GL_TRIANGLES, 0, number_of_triangles_0);
-
-   array_1.bind();
+   array_[1]->bind();
    glDrawArrays(GL_TRIANGLES, 0, number_of_triangles_1);
 
-   array_2.bind();
+   program_->uniform(red_color, color_loc);
+
+   array_[2]->bind();
    glDrawArrays(GL_TRIANGLES, 0, number_of_triangles_2);
 
    logGLError();
 }
-

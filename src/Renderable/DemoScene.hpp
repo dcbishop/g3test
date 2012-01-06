@@ -28,7 +28,7 @@ class DemoScene {
       std::shared_ptr<Renderbuffer> depthbuffer_;
       int width_;
       int height_;
-      Program program_;
+      ProgramPtr program_;
       std::shared_ptr<Cube> cube_;
       std::shared_ptr<ErrorMesh> em_;
       float cube_rotation_;

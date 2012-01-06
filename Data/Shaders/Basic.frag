@@ -1,7 +1,5 @@
 #version 330
 
-in float LightIntensity;
-
 smooth in vec4 FlatColor;
 out vec4 FragColor;
 
@@ -14,6 +12,7 @@ struct matrial {
 };
 
 uniform matrial material;
+uniform vec4 color_overide;
 
 void main() {
    vec4 ambientColor = vec4(0.0, 0.0, 0.0, 1.0);
@@ -26,5 +25,10 @@ void main() {
    if(diffuse_intensity != 0) {
       float fspec = pow(spec, 128.0);
       FragColor.rgb += vec3(fspec, fspec, fspec);
+
+   }
+
+   if(color_overide.rgb != vec3(0.0, 0.0, 0.0)) {
+      FragColor=color_overide;
    }
 }

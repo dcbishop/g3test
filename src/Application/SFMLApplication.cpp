@@ -1,10 +1,7 @@
 #include "SFMLApplication.hpp"
 
 #include "../OpenGL/OpenGL.hpp"
-
 #include "../Renderable/DemoScene.hpp"
-
-#include "../Main/Filesystem.hpp"
 
 SFMLApplication::SFMLApplication() {
    LOG("Constructing SFML Application...");

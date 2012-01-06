@@ -27,3 +27,46 @@ LookupNames Framebuffer::StatusNames = {
    { GL_FRAMEBUFFER_UNSUPPORTED, "GL_FRAMEBUFFER_UNSUPPORTED" },
    { GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE, "GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE" }
 };
+
+
+Framebuffer::Framebuffer() {
+   setID_(0);
+   setTarget(DrawFramebuffer);
+   glGenFramebuffers(1, &id_);
+}
+
+Framebuffer::~Framebuffer() {
+   glDeleteFramebuffers(1, &id_);
+}
+
+void Framebuffer::renderbuffer(const RenderbufferPtr rb, const Target target, const AttachmentType attachment) {
+   DEBUG_M("Attaching Framebuffer %d (%s) with Renderbuffer %d (%s)", getID(), TargetNames[target].c_str(), rb->getID(), AttachmentNames[attachment].c_str());
+   setTarget(target);
+   logGLError();
+   glFramebufferRenderbuffer(getTarget(), attachment, GL_RENDERBUFFER, rb->getID());
+   logGLError();
+}
+
+void Framebuffer::renderbuffer(const RenderbufferPtr rb, const AttachmentType attachment) {
+   renderbuffer(rb, getTarget(), attachment);
+}
+
+GLenum Framebuffer::checkStatus() const {
+   return glCheckFramebufferStatus(getTarget());
+}
+
+GLuint Framebuffer::getID() const {
+   return id_;
+}
+
+Framebuffer::Target Framebuffer::getTarget() const {
+   return target_;
+}
+
+void Framebuffer::setID_(const GLuint id) {
+   id_ = id;
+}
+
+void Framebuffer::setTarget(const Target target) {
+   target_ = target;
+}

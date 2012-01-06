@@ -35,7 +35,7 @@ class GLMatrixStack {
       GLfloat* getOpenGLMatrix();
       glm::mat4& getMatrix();
       glm::mat3 getNormalMatrix();
-      int getSize();
+      int getSize() const;
 
    private:
       std::stack<glm::mat4> matricies_;
@@ -94,7 +94,7 @@ inline glm::mat3 GLMatrixStack::getNormalMatrix() {
    return glm::transpose(glm::inverse(glm::mat3x3(matricies_.top())));
 }
 
-inline int GLMatrixStack::getSize() {
+inline int GLMatrixStack::getSize() const {
    return matricies_.size();
 }
 

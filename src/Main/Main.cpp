@@ -10,7 +10,7 @@ using namespace std;
 #include "../Application/QTApplication.hpp"
 
 int main(int argc, char* argv[]) {
-   LOG("Starting %s %s, built: %s...", argv[0], g.getGitVersion().c_str(), g.getBuildDate().c_str());
+   LOG("Starting %s %s, built: %s...", argv[0], globals.getGitVersion().c_str(), globals.getBuildDate().c_str());
 
    /*GLUTApplication app(argc, argv);
    app.run();*/

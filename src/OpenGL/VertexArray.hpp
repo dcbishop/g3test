@@ -1,11 +1,10 @@
 #ifndef G3TEST_VERTEXARRAY_HPP_
 #define G3TEST_VERTEXARRAY_HPP_
 
+#include <memory>
+
 #include "OpenGL.hpp"
-
 #include "../Debug/console.h"
-
-const GLfloat CUBE_SIZE = 1.0f;
 
 class VertexArray {
    public:
@@ -29,5 +28,6 @@ class VertexArray {
    private:
       GLuint array_;
 };
+typedef std::shared_ptr<VertexArray> VertexArrayPtr;
 
 #endif /*  G3TEST_VERTEXARRAY_HPP_ */
