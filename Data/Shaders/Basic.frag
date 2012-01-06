@@ -28,7 +28,7 @@ void main() {
 
    }
 
-   if(color_overide.rgb != vec3(0.0, 0.0, 0.0)) {
+   if(color_overide.a != 0.0) {
       FragColor=color_overide;
    }
 }

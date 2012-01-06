@@ -31,8 +31,10 @@ void ErrorMesh::init_() {
    using glm::vec3;
    using std::vector;
 
-   // Mesh X_Cube.004
-   vector<GLvec3> vertices_0 = { 
+   // The hardcoded vertices.
+   vector< vector<GLvec3> > vertices = {
+   {
+      // Mesh X_Cube.004
       { 0.300520, -0.194454, 0.050000 },
       { 0.596948, 0.596949, 0.536008 },
       { 0.106066, 0.000000, 0.050000 },
@@ -393,9 +395,8 @@ void ErrorMesh::init_() {
       { -0.000000, 0.000000, 1.000000 },
       { -0.300520, -0.194454, 0.050000 },
       { -0.000000, 0.000000, 1.000000 }
-   };
-   // Mesh Cylinder_Cylinder.006
-   vector<GLvec3> vertices_1 = { 
+   }, {
+      // Mesh Cylinder_Cylinder.006
       { -0.153073, -0.369552, -0.050000 },
       { 0.000000, -0.000000, -1.000000 },
       { -0.191342, -0.461940, -0.050000 },
@@ -3480,9 +3481,8 @@ void ErrorMesh::init_() {
       { 0.595700, 0.803207, 0.000001 },
       { -0.253757, -0.309204, 0.050000 },
       { 0.595700, 0.803207, 0.000001 }
-   };
-   // Mesh Center_Cylinder.004
-   vector<GLvec3> vertices_2 = { 
+   }, {
+      // Mesh Center_Cylinder.004
       { 0.000000, 0.000000, -0.025000 },
       { -0.000000, 0.000001, -1.000000 },
       { 0.000000, 0.400000, -0.025000 },
@@ -5019,37 +5019,21 @@ void ErrorMesh::init_() {
       { -0.049068, 0.998795, -0.000001 },
       { -0.039205, 0.398074, 0.025000 },
       { -0.049068, 0.998795, -0.000001 }
-   };
-   
+   }};
+ 
    for(int i = 0; i < num_meshes_; i++) {
       array_.push_back(VertexArrayPtr(new VertexArray()));
       vertices_buffer_.push_back(BufferPtr(new Buffer()));
+
+      array_[i]->bind();
+      vertices_buffer_[i]->bind();
+      vertices_buffer_[i]->data(vertices[i].size()*sizeof(GLvec3), &vertices[i][0]);
+
+      glVertexAttribPointer(AttributeIndex::Vertex, 3, GL_FLOAT, GL_FALSE, sizeof(GLvec3)*2, 0);
+      glVertexAttribPointer(AttributeIndex::Normal, 3, GL_FLOAT, GL_FALSE, sizeof(GLvec3)*2, (char*)(sizeof(GLvec3)));
+      glEnableVertexAttribArray(AttributeIndex::Vertex);
+      glEnableVertexAttribArray(AttributeIndex::Normal);
    }
-
-   array_[0]->bind();
-   vertices_buffer_[0]->bind();
-   vertices_buffer_[0]->data(vertices_0.size()*sizeof(GLvec3), &vertices_0[0]);
-
-   glVertexAttribPointer(AttributeIndex::Vertex, 3, GL_FLOAT, GL_FALSE, sizeof(GLvec3)*2, 0);
-   glVertexAttribPointer(AttributeIndex::Normal, 3, GL_FLOAT, GL_FALSE, sizeof(GLvec3)*2, (char*)(sizeof(vec3)));
-   glEnableVertexAttribArray(AttributeIndex::Vertex);
-   glEnableVertexAttribArray(AttributeIndex::Normal);
-
-   array_[1]->bind();
-   vertices_buffer_[1]->bind();
-   vertices_buffer_[1]->data(vertices_1.size()*sizeof(GLvec3), &vertices_1[0]);
-   glVertexAttribPointer(AttributeIndex::Vertex, 3, GL_FLOAT, GL_FALSE, sizeof(GLvec3)*2, 0);
-   glVertexAttribPointer(AttributeIndex::Normal, 3, GL_FLOAT, GL_FALSE, sizeof(GLvec3)*2, (char*)(sizeof(vec3)));
-   glEnableVertexAttribArray(AttributeIndex::Vertex);
-   glEnableVertexAttribArray(AttributeIndex::Normal);
-
-   array_[2]->bind();
-   vertices_buffer_[2]->bind();
-   vertices_buffer_[2]->data(vertices_2.size()*sizeof(GLvec3), &vertices_2[0]);
-   glVertexAttribPointer(AttributeIndex::Vertex, 3, GL_FLOAT, GL_FALSE, sizeof(GLvec3)*2, 0);
-   glVertexAttribPointer(AttributeIndex::Normal, 3, GL_FLOAT, GL_FALSE, sizeof(GLvec3)*2, (char*)(sizeof(vec3)));
-   glEnableVertexAttribArray(AttributeIndex::Vertex);
-   glEnableVertexAttribArray(AttributeIndex::Normal);
 
    logGLError();
    
