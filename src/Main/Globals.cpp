@@ -13,6 +13,9 @@ Globals globals;
 #ifndef GIT_SHA1_
 #define GIT_SHA1_ "UNKNOWN"
 #endif /* GIT_SHA1_ */
+#ifndef BUILD_TYPE_
+#define BUILD_TYPE_ "UNKNOWN"
+#endif /* BUILD_TYPE_ */
 
 const std::string Globals::build_date_ = BUILD_DATE_;
 const std::string Globals::git_version_ = GIT_VERSION_;
