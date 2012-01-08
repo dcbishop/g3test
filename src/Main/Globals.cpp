@@ -4,20 +4,20 @@
 
 Globals globals;
 
-#ifndef _BUILD_DATE
-#define _BUILD_DATE "UNKNOWN"
-#endif /* _BUILD_DATE */
-#ifndef _GIT_VERSION
-#define _GIT_VERSION "UNKNOWN"
-#endif /* _GIT_VERSION */
-#ifndef _GIT_SHA1
-#define _GIT_SHA1 "UNKNOWN"
-#endif /* _GIT_SHA1 */
+#ifndef BUILD_DATE_
+#define BUILD_DATE_ "UNKNOWN"
+#endif /* BUILD_DATE_ */
+#ifndef GIT_VERSION_
+#define GIT_VERSION_ "UNKNOWN"
+#endif /* GIT_VERSION_ */
+#ifndef GIT_SHA1_
+#define GIT_SHA1_ "UNKNOWN"
+#endif /* GIT_SHA1_ */
 
-const std::string Globals::build_date_ = _BUILD_DATE;
-const std::string Globals::git_version_ = _GIT_VERSION;
-const std::string Globals::git_sha1_ = _GIT_SHA1;
-const std::string Globals::build_type_ = _BUILD_TYPE;
+const std::string Globals::build_date_ = BUILD_DATE_;
+const std::string Globals::git_version_ = GIT_VERSION_;
+const std::string Globals::git_sha1_ = GIT_SHA1_;
+const std::string Globals::build_type_ = BUILD_TYPE_;
 ResourceManager Globals::rm_;
 
 Globals g;

@@ -11,30 +11,30 @@ option(Profile "Profile" OFF)
 # Build time define
 include(GetDateTime)
 DATETIME(BUILD_DATETIME)
-add_definitions(-D_BUILD_DATE="${BUILD_DATETIME}")
+add_definitions(-DBUILD_DATE_="${BUILD_DATETIME}")
 
 # Git version info
 include(GetGitRevisionDescription)
 git_describe(GIT_DESCRIBE "--always")
-add_definitions(-D_GIT_VERSION="${GIT_DESCRIBE}")
+add_definitions(-DGIT_VERSION_="${GIT_DESCRIBE}")
 
 # Build type
-if(${CMAKE_BUILD_TYPE})
-   add_definitions(-D_BUILD_TYPE="${CMAKE_BUILD_TYPE}")
-   message("Build type: ${CMAKE_BUILD_TYPE}...")
-else(${CMAKE_BUILD_TYPE})
-   add_definitions(-D_BUILD_TYPE="Default")
+if(${CMAKEBUILD_TYPE_})
+   add_definitions(-DBUILD_TYPE_="${CMAKEBUILD_TYPE_}")
+   message("Build type: ${CMAKEBUILD_TYPE_}...")
+else(${CMAKEBUILD_TYPE_})
+   add_definitions(-DBUILD_TYPE_="Default")
    message("Default build type...")
-endif(${CMAKE_BUILD_TYPE})
+endif(${CMAKEBUILD_TYPE_})
 
 # Git SHA1 define
 get_git_head_revision(GIT_REFSPEC GIT_SHA1)
-add_definitions(-D_GIT_SHA1="${GIT_SHA1}")
+add_definitions(-DGIT_SHA1_="${GIT_SHA1}")
 
 # Add debug define
-if(CMAKE_BUILD_TYPE MATCHES "Debug") 
+if(CMAKEBUILD_TYPE_ MATCHES "Debug") 
    add_definitions(-D_DEBUG)
-endif(CMAKE_BUILD_TYPE MATCHES "Debug") 
+endif(CMAKEBUILD_TYPE_ MATCHES "Debug") 
 
 # Add custom debug build compiler flags here...
 #set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O3")
