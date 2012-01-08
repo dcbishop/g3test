@@ -11,6 +11,8 @@ class GLWidget;
 class QDockWidget;
 
 class Widget : public QMainWindow {
+   Q_OBJECT
+
    public:
       Widget();
       void redraw();

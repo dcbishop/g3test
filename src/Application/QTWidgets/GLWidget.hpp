@@ -15,7 +15,7 @@ using std::shared_ptr;
 class DemoScene;
 
 class GLWidget : public QGLWidget {
-   //Q_OBJECT
+   Q_OBJECT
 
    public:
       explicit GLWidget(QWidget *parent = 0);
