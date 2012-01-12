@@ -47,7 +47,7 @@ class Framebuffer {
       Target target_;
 };
 
-typedef shared_ptr<Framebuffer> FramebufferPtr;
+typedef std::shared_ptr<Framebuffer> FramebufferPtr;
 
 inline void Framebuffer::bind() {
    bind(getTarget());

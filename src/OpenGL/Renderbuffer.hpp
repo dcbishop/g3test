@@ -4,7 +4,6 @@
 #include "OpenGL.hpp"
 
 #include <memory>
-using std::shared_ptr;
 
 class Renderbuffer {
    public:
@@ -59,7 +58,7 @@ class Renderbuffer {
    private:
       GLuint id_;
 };
-typedef shared_ptr<Renderbuffer> RenderbufferPtr;
+typedef std::shared_ptr<Renderbuffer> RenderbufferPtr;
 
 #endif /* G3TEST_RENDERBUFFER_HPP_ */
 

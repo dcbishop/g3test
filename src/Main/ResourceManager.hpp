@@ -11,13 +11,8 @@
 #include "../OpenGL/Program.hpp"
 #include "../OpenGL/Shader.hpp"
 
-using std::vector;
-using std::shared_ptr;
-using std::unordered_map;
-using boost::filesystem::path;
-
-typedef unordered_map<std::string, ShaderPtr> ShaderMap;
-typedef unordered_map<std::string, ProgramPtr> ProgramMap;
+typedef std::unordered_map<std::string, ShaderPtr> ShaderMap;
+typedef std::unordered_map<std::string, ProgramPtr> ProgramMap;
 
 class ResourceManager {   
    public:
@@ -31,20 +26,20 @@ class ResourceManager {
       ProgramPtr getShaderProgram(const std::string& filename);
 
    private:
-      std::vector<path> findDataPaths_();
-      path findImageFile_(const path& filename);
-      path findShaderFile_(const path& filename);
-      std::vector<char> readIntoVector_(const path& filename);
+      std::vector<boost::filesystem::path> findDataPaths_();
+      boost::filesystem::path findImageFile_(const boost::filesystem::path& filename);
+      boost::filesystem::path findShaderFile_(const boost::filesystem::path& filename);
+      std::vector<char> readIntoVector_(const boost::filesystem::path& filename);
 
-      ShaderPtr loadShader_(const path& filename, const Shader::Type& type);
+      ShaderPtr loadShader_(const boost::filesystem::path& filename, const Shader::Type& type);
 
       ShaderMap shaders_;
       ProgramMap programs_;
 
-      std::vector<path> hardcoded_data_paths;
-      std::vector<path> data_paths_;
+      std::vector<boost::filesystem::path> hardcoded_data_paths;
+      std::vector<boost::filesystem::path> data_paths_;
 };
 
-typedef shared_ptr<ResourceManager> ResourceManagerPtr;
+typedef std::shared_ptr<ResourceManager> ResourceManagerPtr;
 
 #endif /* G3TEST_RESOURCEMANAGER_HPP_ */
