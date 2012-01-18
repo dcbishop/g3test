@@ -49,4 +49,19 @@ namespace UniformName {
    static const GLchar* ModelViewProjectionMatrix = "MVPMatrix";
    static const GLchar* NormalMatrix = "NormalMatrix";
 }
+
+namespace g3 {
+   enum InternalFormat :GLenum {
+      RGB = GL_RGB,
+      RGBA = GL_RGBA,
+      DepthComponnt = GL_DEPTH_COMPONENT,
+      DepthComponnt16 = GL_DEPTH_COMPONENT16,
+      DepthComponnt24 = GL_DEPTH_COMPONENT24,
+      DepthComponnt32 = GL_DEPTH_COMPONENT32,
+      DepthComponnt32F = GL_DEPTH_COMPONENT32F,
+      StencilIndex = GL_STENCIL_INDEX
+   };
+   extern LookupNames FormatNames;
+}
+
 #endif /* G3TEST_OPENGL_HPP_ */

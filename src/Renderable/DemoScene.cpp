@@ -31,7 +31,7 @@ DemoScene::DemoScene(const int width, const int height) {
    // Load the vertex/fragment shader.
    program_ = rm.getVFProgram("Basic.vert", "Basic.frag");
    program_->debugLog();
-   logGLError();
+      logGLError();
    program_->use();
    logGLError();
 
@@ -68,13 +68,13 @@ void DemoScene::setSize(const int width, const int height) {
 
    colorbuffer_ = RenderbufferPtr(new Renderbuffer);
    colorbuffer_->bind();
-   colorbuffer_->storage(Renderbuffer::RGBA, width_, height_);
+   colorbuffer_->storage(g3::RGBA, width_, height_);
 
    logGLError();
 
    depthbuffer_ = RenderbufferPtr(new Renderbuffer);
    depthbuffer_->bind();
-   depthbuffer_->storage(Renderbuffer::DepthComponnt24, width_, height_);
+   depthbuffer_->storage(g3::DepthComponnt24, width_, height_);
 
    logGLError();
 
