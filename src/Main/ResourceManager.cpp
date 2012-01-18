@@ -7,6 +7,7 @@
 using namespace boost::filesystem;
 using namespace std;
 
+// [TODO]: Boost won't expand ~ to the home directory. Consider getenv("HOME").
 ResourceManager::ResourceManager() {
    DEBUG_M("Initilizing ResourceManager");
    hardcoded_data_paths = {"", "../", "~/.g3test/Data", "/usr/local/games/g3test", "/usr/shared/g3test/", "/usr/shared/games/g3test/"};
