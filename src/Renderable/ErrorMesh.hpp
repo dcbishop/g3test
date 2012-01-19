@@ -49,7 +49,8 @@ inline void ErrorMesh::render() {
    array_[2]->draw();
 
    program_->uniform(no_color, color_loc);
-
+   
+   VertexArray::unbind();
    logGLError();
 }
 
