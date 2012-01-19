@@ -1,5 +1,5 @@
-#ifndef G3_SHADER_HPP_
-#define G3_SHADER_HPP_
+#ifndef G3_TEXTURE_HPP_
+#define G3_TEXTURE_HPP_
 
 #include "OpenGL.hpp"
 #include <memory>
@@ -69,21 +69,50 @@ class Texture {
          UnsignedInt_10_10_10_2     = GL_UNSIGNED_INT_10_10_10_2,
          UnsignedInt_2_10_10_10_Rev = GL_UNSIGNED_INT_2_10_10_10_REV
       };
+      
+      // OpenGL 4.2 specifications - Page 240 - Table 3.16
+      enum Filter: GLenum {
+         Linear               = GL_LINEAR,
+         Nearest              = GL_NEAREST,
+         NearestMipmapNearest = GL_NEAREST_MIPMAP_NEAREST,
+         NearestMipmapLinear  = GL_NEAREST_MIPMAP_LINEAR,
+         LinearMipmapNearest  = GL_LINEAR_MIPMAP_NEAREST,
+         LinearMipmapLinear   = GL_LINEAR_MIPMAP_LINEAR
+      };
+      
+      enum CompareFunc: GLenum {
+         LEqual      = GL_LEQUAL,
+         GEqual      = GL_GEQUAL,
+         Less        = GL_LESS,
+         Greater     = GL_GREATER,
+         Equal       = GL_EQUAL,
+         NotEqual    = GL_NOTEQUAL,
+         Always      = GL_ALWAYS,
+         Never       = GL_NEVER
+      };
 
       Texture();
       ~Texture();
-      void bind(const Target target);
+      void bind() const;
+      void bind(const Target target) const;
       GLuint getTextureId() const;
       void parameter(const Parameter pname, const GLint& param);
-      void parameter(const Target target, const Parameter pname, const GLint& param);
       void parameter(const Parameter pname, const GLfloat& param);
+      void parameter(const Parameter pname, const GLenum& param);
+      void parameter(const Target target, const Parameter pname, const GLenum& param);
+      void parameter(const Target target, const Parameter pname, const GLint& param);
       void parameter(const Target target, const Parameter pname, const GLfloat& param);
+
+      void setMinFilter(const Filter filter);
+      void setMagFilter(const Filter filter);
       static void activeTexture(GLenum texture);
 
       void image2D(const Target target, const GLint level,
          const g3::InternalFormat internalFormat, const GLsizei width,
          const GLsizei height, const GLint border, const Format format,
          const Type type, const GLvoid* data);
+
+      Target getTarget() const;
 
       static LookupNames TargetNames;
       static LookupNames ParameterNames;
@@ -109,8 +138,11 @@ inline GLuint Texture::getTextureId() const {
    return texid_;
 }
 
-inline void Texture::bind(const Texture::Target target = Texture::Texture2D) {
-   target_ = target;
+inline void Texture::bind() const {
+   bind(target_);
+}
+
+inline void Texture::bind(const Texture::Target target) const {
    glBindTexture(target, getTextureId());
 }
 
@@ -125,6 +157,8 @@ inline void Texture::image2D(
    const Type type,
    const GLvoid* data = nullptr)
 {
+   target_ = target;
+   bind();
    glTexImage2D(target, level, internalFormat, width, height, border, format, type, data);
 }
 
@@ -132,16 +166,34 @@ inline void Texture::parameter(const Parameter pname, const GLint& param) {
    parameter(target_, pname, param);
 }
 
-inline void Texture::parameter(const Target target, const Parameter pname, const GLint& param) {
-   glTexParameteri(target, pname, param);
-}
-
 inline void Texture::parameter(const Parameter pname, const GLfloat& param) {
    parameter(target_, pname, param);
 }
 
-inline void Texture::parameter(const Target target, const Parameter pname, const GLfloat& param) {
+inline void Texture::parameter(const Parameter pname, const GLenum& param) {
+   parameter(target_, pname, (GLint)param);
+}
+
+inline void Texture::parameter(const Target target, const Parameter pname, const GLint& param) {
+   bind();
    glTexParameteri(target, pname, param);
+}
+
+inline void Texture::parameter(const Target target, const Parameter pname, const GLfloat& param) {
+   bind();
+   glTexParameterf(target, pname, param);
+}
+
+inline void Texture::parameter(const Target target, const Parameter pname, const GLenum& param) {
+   parameter(target, pname, (GLint)param);
+}
+
+inline void Texture::setMinFilter(const Filter filter) {
+   parameter(MinFilter, filter);
+}
+
+inline void Texture::setMagFilter(const Filter filter) {
+   parameter(MagFilter, filter);
 }
 
 // TODO: Is there a proper way to programtically get the defined
@@ -153,4 +205,8 @@ inline void Texture::activeTexture(GLenum texture) {
    glActiveTexture(texture);
 }
 
-#endif /* G3_SHADER_HPP_ */
+inline Texture::Target Texture::getTarget() const {
+   return target_;
+}
+
+#endif /* G3_TEXTURE_HPP_ */
