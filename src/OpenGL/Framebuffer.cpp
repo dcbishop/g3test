@@ -1,5 +1,7 @@
 #include "Framebuffer.hpp"
 
+#include "Texture.hpp"
+
 // C++11 Only: Some uniform initlilization :)
 LookupNames Framebuffer::AttachmentNames = {
    { GL_COLOR_ATTACHMENT0,        "GL_COLOR_ATTACHMENT0"        },
@@ -39,7 +41,7 @@ Framebuffer::~Framebuffer() {
    glDeleteFramebuffers(1, &id_);
 }
 
-void Framebuffer::renderbuffer(const RenderbufferPtr rb, const Target target, const AttachmentType attachment) {
+void Framebuffer::renderbuffer(const RenderbufferPtr& rb, const Target target, const AttachmentType attachment) {
    DEBUG_M("Attaching Framebuffer %d (%s) with Renderbuffer %d (%s)", getID(), TargetNames[target].c_str(), rb->getID(), AttachmentNames[attachment].c_str());
    setTarget(target);
    logGLError();
@@ -47,7 +49,7 @@ void Framebuffer::renderbuffer(const RenderbufferPtr rb, const Target target, co
    logGLError();
 }
 
-void Framebuffer::renderbuffer(const RenderbufferPtr rb, const AttachmentType attachment) {
+void Framebuffer::renderbuffer(const RenderbufferPtr& rb, const AttachmentType attachment) {
    renderbuffer(rb, getTarget(), attachment);
 }
 
@@ -69,4 +71,17 @@ void Framebuffer::setID_(const GLuint id) {
 
 void Framebuffer::setTarget(const Target target) {
    target_ = target;
+}
+
+void Framebuffer::texture(
+      const TexturePtr& texture,
+      const AttachmentType& attachment,
+      const GLint& level,
+      const GLint& layer)
+{
+   //glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderTex, 0);
+   if(texture->getTarget() == Texture::Texture2D) {
+      glFramebufferTexture2D(getTarget(), attachment, texture->getTarget(), texture->getTextureId(), 0);
+   }
+
 }

@@ -3,6 +3,7 @@
 
 #include "OpenGL.hpp"
 #include "Renderbuffer.hpp"
+#include "Texture.hpp"
 
 class Framebuffer {
    public:
@@ -33,8 +34,9 @@ class Framebuffer {
       void bind();
       static void unbind();
       void bind(const Target target);
-      void renderbuffer(const RenderbufferPtr rb, const Target target, const AttachmentType attachment);
-      void renderbuffer(const RenderbufferPtr rb, const AttachmentType attachment);
+      void renderbuffer(const RenderbufferPtr& rb, const Target target, const AttachmentType attachment);
+      void renderbuffer(const RenderbufferPtr& rb, const AttachmentType attachment);
+      void texture(const TexturePtr& texture, const AttachmentType& attachment, const GLint& level = 0, const GLint& layer = 0);
       GLenum checkStatus() const;
       GLuint getID() const;      
       Target getTarget() const;
