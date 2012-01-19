@@ -38,6 +38,7 @@ inline void ErrorMesh::render() {
 
    const static glm::vec4 white_color(1.0f, 1.0f, 1.0f, 1.0f);
    const static glm::vec4 red_color(1.0f, 0.0f, 0.0f, 1.0f);
+   const static glm::vec4 no_color(0.0f, 0.0f, 0.0f, 0.0f);
    const static GLuint color_loc = program_->getUniformLocation("color_overide");
 
    program_->uniform(white_color, color_loc);
@@ -46,6 +47,8 @@ inline void ErrorMesh::render() {
 
    program_->uniform(red_color, color_loc);
    array_[2]->draw();
+
+   program_->uniform(no_color, color_loc);
 
    logGLError();
 }
