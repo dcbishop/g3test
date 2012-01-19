@@ -6,7 +6,7 @@ Shader::Shader(const Type type, std::vector<char> source_code): type_(type) {
       ERROR("Tried to construct shader with empty source...");
       return;
    }
-      
+
    init_(type, &source_code[0], source_code.size());
 }
 
@@ -72,5 +72,5 @@ void Shader::init_(const Type type, const char* source_code, const GLint size) {
       source(source_code, size);
    } else {
       has_source_ = false;
-   }         
+   }
 }

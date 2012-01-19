@@ -22,7 +22,7 @@ class Program {
       void bindAttribLocation(const GLuint index, const GLchar* name);
       void uniformMatrix(const glm::mat4& matrix, const GLuint index);
       void uniformMatrix(const glm::mat3& matrix, const GLuint index);
-      
+
       void uniform(const GLfloat& v0, const GLuint& index);
       void uniform(const glm::vec2& v, const GLuint& index);
       void uniform(const glm::vec3& v, const GLuint& index);
