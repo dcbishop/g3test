@@ -92,7 +92,7 @@ void DemoScene::setSize(const int width, const int height) {
    framebuffer_->renderbuffer(depthbuffer_, Framebuffer::Depth);
    logGLError();
 
-   LOG("Framebuffer Status: %s", Framebuffer::StatusNames[framebuffer_->checkStatus()].c_str());
+   DEBUG_M("Framebuffer Status: %s", Framebuffer::StatusNames[framebuffer_->checkStatus()].c_str());
 
    glEnable(GL_DEPTH_TEST);
    logGLError();
