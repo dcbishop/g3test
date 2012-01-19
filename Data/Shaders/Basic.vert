@@ -3,15 +3,16 @@
 layout(location = 0) in vec4 Position;
 layout(location = 2) in vec3 Normal;
 layout(location = 3) in vec3 Color;
+layout(location = 8) in vec3 TexCoord0;
 
 uniform mat4 MVMatrix;
 uniform mat4 MVPMatrix;
 uniform mat3 NormalMatrix;
 
-out vec2 PositionXY;
 smooth out vec3 VaryingNormal;
 smooth out vec3 VaryingLightDir;
 smooth out vec4 FlatColor;
+smooth out vec2 UVCoord0;
 
 struct light {
    vec4 position;
@@ -26,5 +27,6 @@ void main() {
 
    gl_Position = MVPMatrix * Position;
    FlatColor = vec4(Color, 1.0f);
-   PositionXY = gl_Position.xy;
+   
+   UVCoord0 = TexCoord0.st;
 }
