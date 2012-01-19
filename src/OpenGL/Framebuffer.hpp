@@ -8,9 +8,9 @@ class Framebuffer {
    public:
 
       enum Target :GLenum {
-         DrawFramebuffer = GL_DRAW_FRAMEBUFFER,
-         ReadFramebuffer = GL_READ_FRAMEBUFFER,
-         DefaultFramebuffer = GL_FRAMEBUFFER
+         DrawFramebuffer      = GL_DRAW_FRAMEBUFFER,
+         ReadFramebuffer      = GL_READ_FRAMEBUFFER,
+         DefaultFramebuffer   = GL_FRAMEBUFFER
       };
 
       static LookupNames AttachmentNames;
@@ -18,14 +18,14 @@ class Framebuffer {
       static LookupNames StatusNames;
 
       enum AttachmentType :GLenum {
-         Color = GL_COLOR_ATTACHMENT0,
-         Color0 = GL_COLOR_ATTACHMENT0,
-         Color1 = GL_COLOR_ATTACHMENT1,
-         Color2 = GL_COLOR_ATTACHMENT2,
-         Color3 = GL_COLOR_ATTACHMENT3,
-         Depth = GL_DEPTH_ATTACHMENT,
-         Stencil = GL_STENCIL_ATTACHMENT,
-         DepthStencil = GL_DEPTH_STENCIL_ATTACHMENT
+         Color          = GL_COLOR_ATTACHMENT0,
+         Color0         = GL_COLOR_ATTACHMENT0,
+         Color1         = GL_COLOR_ATTACHMENT1,
+         Color2         = GL_COLOR_ATTACHMENT2,
+         Color3         = GL_COLOR_ATTACHMENT3,
+         Depth          = GL_DEPTH_ATTACHMENT,
+         Stencil        = GL_STENCIL_ATTACHMENT,
+         DepthStencil   = GL_DEPTH_STENCIL_ATTACHMENT
       };
 
       Framebuffer();

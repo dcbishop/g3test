@@ -21,45 +21,45 @@ typedef std::unordered_map<GLenum, std::string> LookupNames;
 
 namespace AttributeIndex {
    enum AttributeIndex {
-      Vertex = 0,
-      Normal = 2,
-      Color = 3,
-      SecondaryColor = 4,
-      FogCoord = 5,
-      MultiTextCoord0 = 8,
-      MultiTextCoord1 = 9,
-      MultiTextCoord2 = 10,
-      MultiTextCoord3 = 11,
-      MultiTextCoord4 = 12,
-      MultiTextCoord5 = 13,
-      MultiTextCoord6 = 14,
-      MultiTextCoord7 = 15
+      Vertex            = 0,
+      Normal            = 2,
+      Color             = 3,
+      SecondaryColor    = 4,
+      FogCoord          = 5,
+      MultiTextCoord0   = 8,
+      MultiTextCoord1   = 9,
+      MultiTextCoord2   = 10,
+      MultiTextCoord3   = 11,
+      MultiTextCoord4   = 12,
+      MultiTextCoord5   = 13,
+      MultiTextCoord6   = 14,
+      MultiTextCoord7   = 15
    };
 }
 
 namespace AttributeName {
-   static const GLchar* Vertex = "Position";
+   static const GLchar* Vertex   = "Position";
    static const GLchar* Position = "Position";
-   static const GLchar* Normal = "Normal";
-   static const GLchar* Color = "Color";
+   static const GLchar* Normal   = "Normal";
+   static const GLchar* Color    = "Color";
 }
 
 namespace UniformName {
-   static const GLchar* ModelViewMatrix = "MVMatrix";
-   static const GLchar* ModelViewProjectionMatrix = "MVPMatrix";
-   static const GLchar* NormalMatrix = "NormalMatrix";
+   static const GLchar* ModelViewMatrix            = "MVMatrix";
+   static const GLchar* ModelViewProjectionMatrix  = "MVPMatrix";
+   static const GLchar* NormalMatrix               = "NormalMatrix";
 }
 
 namespace g3 {
    enum InternalFormat :GLenum {
-      RGB = GL_RGB,
-      RGBA = GL_RGBA,
-      DepthComponnt = GL_DEPTH_COMPONENT,
-      DepthComponnt16 = GL_DEPTH_COMPONENT16,
-      DepthComponnt24 = GL_DEPTH_COMPONENT24,
-      DepthComponnt32 = GL_DEPTH_COMPONENT32,
-      DepthComponnt32F = GL_DEPTH_COMPONENT32F,
-      StencilIndex = GL_STENCIL_INDEX
+      RGB               = GL_RGB,
+      RGBA              = GL_RGBA,
+      DepthComponnt     = GL_DEPTH_COMPONENT,
+      DepthComponnt16   = GL_DEPTH_COMPONENT16,
+      DepthComponnt24   = GL_DEPTH_COMPONENT24,
+      DepthComponnt32   = GL_DEPTH_COMPONENT32,
+      DepthComponnt32F  = GL_DEPTH_COMPONENT32F,
+      StencilIndex      = GL_STENCIL_INDEX
    };
    extern LookupNames FormatNames;
 }
