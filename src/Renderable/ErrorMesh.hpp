@@ -41,15 +41,11 @@ inline void ErrorMesh::render() {
    const static GLuint color_loc = program_->getUniformLocation("color_overide");
 
    program_->uniform(white_color, color_loc);
-   array_[0]->bind();
-   glDrawArrays(GL_TRIANGLES, 0, number_of_triangles_0);
-   array_[1]->bind();
-   glDrawArrays(GL_TRIANGLES, 0, number_of_triangles_1);
+   array_[0]->draw();
+   array_[1]->draw();
 
    program_->uniform(red_color, color_loc);
-
-   array_[2]->bind();
-   glDrawArrays(GL_TRIANGLES, 0, number_of_triangles_2);
+   array_[2]->draw();
 
    logGLError();
 }

@@ -5033,6 +5033,8 @@ void ErrorMesh::init_() {
       glVertexAttribPointer(AttributeIndex::Normal, 3, GL_FLOAT, GL_FALSE, sizeof(GLvec3)*2, (char*)(sizeof(GLvec3)));
       glEnableVertexAttribArray(AttributeIndex::Vertex);
       glEnableVertexAttribArray(AttributeIndex::Normal);
+      array_[i]->setCount(vertices_buffer_[i]->getSize()/sizeof(GLvec3)*3);
+      array_[i]->setMode(VertexArray::Triangles);
    }
 
    logGLError();
