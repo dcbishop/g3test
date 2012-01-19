@@ -11,6 +11,7 @@
 class Cube;
 class Framebuffer;
 class Renderbuffer;
+class Texture;
 class ErrorMesh;
 
 class DemoScene {
@@ -26,6 +27,7 @@ class DemoScene {
       std::shared_ptr<Framebuffer> framebuffer_;
       std::shared_ptr<Renderbuffer> colorbuffer_;
       std::shared_ptr<Renderbuffer> depthbuffer_;
+      std::shared_ptr<Texture> texture_;
       int width_;
       int height_;
       ProgramPtr program_;

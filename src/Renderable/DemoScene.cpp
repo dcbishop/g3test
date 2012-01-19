@@ -11,7 +11,7 @@ using std::string;
 #include "../OpenGL/Shader.hpp"
 #include "../OpenGL/Framebuffer.hpp"
 #include "../OpenGL/Renderbuffer.hpp"
-
+#include "../OpenGL/Texture.hpp"
 
 #include "../Debug/console.h"
 
@@ -78,12 +78,17 @@ void DemoScene::setSize(const int width, const int height) {
 
    logGLError();
 
+   texture_ = TexturePtr(new Texture);
+   glActiveTexture(GL_TEXTURE0);
+   texture_->bind(Texture::Texture2D);
+   texture_->image2D(Texture::Texture2D, 0, g3::RGBA, width_, height_,
+                     0, Texture::RGBA, Texture::UnsignedByte, nullptr);
+   texture_->setMinFilter(Texture::Linear);
+   texture_->setMagFilter(Texture::Linear);
+
    framebuffer_ = FramebufferPtr(new Framebuffer);
-   logGLError();
    framebuffer_->bind();
-   logGLError();
-   framebuffer_->renderbuffer(colorbuffer_, Framebuffer::Color);
-   logGLError();
+   framebuffer_->texture(texture_, Framebuffer::Color);
    framebuffer_->renderbuffer(depthbuffer_, Framebuffer::Depth);
    logGLError();
 
