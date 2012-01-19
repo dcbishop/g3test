@@ -23,6 +23,7 @@ class Cube {
       VertexArray array_;
       Buffer buffer_;
       static bool isInitilized_;
+      static unsigned int refs_;
 };
 
 #endif /* G3TEST_CUBE_HPP_ */

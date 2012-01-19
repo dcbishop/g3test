@@ -7,16 +7,23 @@ using std::vector;
 #include "../Debug/console.h"
 
 bool Cube::isInitilized_ = false;
+unsigned int Cube::refs_ = 0;
 
 Cube::Cube() {
    if(!isInitilized_) {
       init();
    }
+
+   refs_++;
+
    logGLError();
 }
 
 Cube::~Cube() {
-   deinit();
+   refs_--;
+   if(refs_ == 0) {
+      deinit();
+   }
 }
 
 void Cube::init() {
