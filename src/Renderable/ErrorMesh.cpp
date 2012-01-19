@@ -5062,28 +5062,3 @@ ErrorMesh::~ErrorMesh() {
       deinit_();
    }
 }
-
-void ErrorMesh::render() {
-   glDisable(GL_CULL_FACE);
-
-   static unsigned int number_of_triangles_0 = vertices_buffer_[0]->getSize()/sizeof(GLvec3);
-   static unsigned int number_of_triangles_1 = vertices_buffer_[1]->getSize()/sizeof(GLvec3);
-   static unsigned int number_of_triangles_2 = vertices_buffer_[2]->getSize()/sizeof(GLvec3);
-
-   const static glm::vec4 white_color(1.0f, 1.0f, 1.0f, 1.0f);
-   const static glm::vec4 red_color(1.0f, 0.0f, 0.0f, 1.0f);
-   const static GLuint color_loc = program_->getUniformLocation("color_overide");
-
-   program_->uniform(white_color, color_loc);
-   array_[0]->bind();
-   glDrawArrays(GL_TRIANGLES, 0, number_of_triangles_0);
-   array_[1]->bind();
-   glDrawArrays(GL_TRIANGLES, 0, number_of_triangles_1);
-
-   program_->uniform(red_color, color_loc);
-
-   array_[2]->bind();
-   glDrawArrays(GL_TRIANGLES, 0, number_of_triangles_2);
-
-   logGLError();
-}
