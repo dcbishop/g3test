@@ -13,6 +13,7 @@ class Framebuffer;
 class Renderbuffer;
 class Texture;
 class ErrorMesh;
+class TextureQuad;
 
 class DemoScene {
    public:
@@ -27,12 +28,13 @@ class DemoScene {
       std::shared_ptr<Framebuffer> framebuffer_;
       std::shared_ptr<Renderbuffer> colorbuffer_;
       std::shared_ptr<Renderbuffer> depthbuffer_;
-      std::shared_ptr<Texture> texture_;
+      std::vector<std::shared_ptr<Texture>> texture_;
       int width_;
       int height_;
       ProgramPtr program_;
       std::shared_ptr<Cube> cube_;
       std::shared_ptr<ErrorMesh> em_;
+      std::shared_ptr<TextureQuad> tq_;
       float cube_rotation_;
       glm::mat4 projection_matrix_;
       GLMatrixStack stack_;

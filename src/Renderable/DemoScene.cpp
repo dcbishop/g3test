@@ -6,6 +6,7 @@ using std::string;
 #include "../Main/Globals.hpp"
 #include "../Renderable/Cube.hpp"
 #include "../Renderable/ErrorMesh.hpp"
+#include "../Renderable/TextureQuad.hpp"
 #include "../Main/ResourceManager.hpp"
 #include "../OpenGL/OpenGL.hpp"
 #include "../OpenGL/Shader.hpp"
@@ -21,8 +22,9 @@ DemoScene::DemoScene(const int width, const int height) {
    ResourceManager& rm = globals.getResourceManager();
 
    em_ = shared_ptr<ErrorMesh>(new ErrorMesh());
-   //cube_ = shared_ptr<Cube>(new Cube());
+   cube_ = shared_ptr<Cube>(new Cube());
    cube_rotation_ = 45.0f;
+   tq_ = shared_ptr<TextureQuad>(new TextureQuad());
 
    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
    glClearDepth(10000.0f);
@@ -78,17 +80,27 @@ void DemoScene::setSize(const int width, const int height) {
 
    logGLError();
 
-   texture_ = TexturePtr(new Texture);
+
+   texture_.push_back(TexturePtr(new Texture));
    glActiveTexture(GL_TEXTURE0);
-   texture_->bind(Texture::Texture2D);
-   texture_->image2D(Texture::Texture2D, 0, g3::RGBA, width_, height_,
+   texture_[0]->bind(Texture::Texture2D);
+   texture_[0]->image2D(Texture::Texture2D, 0, g3::RGBA, width_, height_,
                      0, Texture::RGBA, Texture::UnsignedByte, nullptr);
-   texture_->setMinFilter(Texture::Linear);
-   texture_->setMagFilter(Texture::Linear);
+   texture_[0]->setMinFilter(Texture::Linear);
+   texture_[0]->setMagFilter(Texture::Linear);
+
+   texture_.push_back(TexturePtr(new Texture));
+   glActiveTexture(GL_TEXTURE1);
+   texture_[1]->bind(Texture::Texture2D);
+   texture_[1]->image2D(Texture::Texture2D, 0, g3::RGBA, width_, height_,
+                     0, Texture::RGBA, Texture::UnsignedByte, nullptr);
+   texture_[1]->setMinFilter(Texture::Linear);
+   texture_[1]->setMagFilter(Texture::Linear);
 
    framebuffer_ = FramebufferPtr(new Framebuffer);
    framebuffer_->bind();
-   framebuffer_->texture(texture_, Framebuffer::Color);
+   framebuffer_->texture(texture_[0], Framebuffer::Color);
+   framebuffer_->texture(texture_[1], Framebuffer::Color1);
    framebuffer_->renderbuffer(depthbuffer_, Framebuffer::Depth);
    logGLError();
 
@@ -124,20 +136,26 @@ void DemoScene::render() {
    logGLError();
    framebuffer_->bind(Framebuffer::DrawFramebuffer);
    logGLError();
-   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-   
-   static std::vector<GLenum> drawBufs = { Framebuffer::Color };
+
+   static std::vector<GLenum> drawBufs = { Framebuffer::Color, Framebuffer::Color1 };
    glDrawBuffers(drawBufs.size(), &drawBufs[0]);
+
+   glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
    //cube_->render();
    em_->render();
    stack_.popMatrix();
+
    framebuffer_->unbind();
-   logGLError();
-   framebuffer_->bind(Framebuffer::ReadFramebuffer);
+   glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+   tq_->render();
+
+   //framebuffer_->bind(Framebuffer::ReadFramebuffer);
    logGLError();
 
-   glBlitFramebuffer( 0, 0, width_, height_, 0, 0, width_, height_, GL_COLOR_BUFFER_BIT, GL_NEAREST );
+   //glBlitFramebuffer( 0, 0, width_, height_, 0, 0, width_, height_, GL_COLOR_BUFFER_BIT, GL_NEAREST );
    logGLError();
    framebuffer_->unbind();
 }
