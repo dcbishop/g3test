@@ -1,10 +1,10 @@
 #version 330
 
 smooth in vec4 FlatColor;
-out vec4 FragColor;
-
 smooth in vec3 VaryingNormal;
 smooth in vec3 VaryingLightDir;
+
+layout(location = 0) out vec4 FragColor;
 
 struct matrial {
    vec4 diffuseColor;

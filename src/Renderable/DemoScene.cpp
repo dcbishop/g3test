@@ -125,6 +125,10 @@ void DemoScene::render() {
    framebuffer_->bind(Framebuffer::DrawFramebuffer);
    logGLError();
    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+   
+   static std::vector<GLenum> drawBufs = { Framebuffer::Color };
+   glDrawBuffers(drawBufs.size(), &drawBufs[0]);
+
    //cube_->render();
    em_->render();
    stack_.popMatrix();
