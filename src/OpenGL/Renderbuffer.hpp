@@ -29,7 +29,7 @@ class Renderbuffer {
 
       void storage(const g3::InternalFormat internalformat, const GLsizei width, const GLsizei height) {
          bind();
-         DEBUG_M("storage(%s, %d, %d)", FormatNames[internalformat].c_str(), width, height);
+         DEBUG_M("storage(%s, %d, %d)", g3::FormatNames[internalformat].c_str(), width, height);
          glRenderbufferStorage(GL_RENDERBUFFER, internalformat, width, height);
          logGLError();
       }
