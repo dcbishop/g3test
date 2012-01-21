@@ -25,6 +25,7 @@ DemoScene::DemoScene(const int width, const int height) {
    cube_ = shared_ptr<Cube>(new Cube());
    cube_rotation_ = 45.0f;
    tq_ = shared_ptr<TextureQuad>(new TextureQuad());
+   tq_->setProgram(rm.getVFProgram("FlatTexture.vert", "FlatTexture.frag"));
 
    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
    glClearDepth(10000.0f);
@@ -33,7 +34,7 @@ DemoScene::DemoScene(const int width, const int height) {
    // Load the vertex/fragment shader.
    program_ = rm.getVFProgram("Basic.vert", "Basic.frag");
    program_->debugLog();
-      logGLError();
+   logGLError();
    program_->use();
    logGLError();
 
@@ -119,6 +120,7 @@ void DemoScene::update(const float dt) {
    if(cube_rotation_ > 360.0f) {
       cube_rotation_ -= 360.0f;
    }
+   globals.setGametime(globals.getGametime()+dt);
 }
 
 void DemoScene::render() {
