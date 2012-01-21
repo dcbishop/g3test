@@ -37,10 +37,13 @@ class Buffer {
       void setTarget(const Target target);
       void bind();
       void bind(const Target target);
+      void bindRange(const GLuint& index, const g3::GLintptr& offset, const g3::GLsizeiptr& size);
       void unbind();
       void data(const Target target, const GLsizei size, const void* data, const Usage usage=StaticDraw);
       void data(const GLsizei size, const void* data, const Usage usage=StaticDraw);
       GLsizei getSize() const;
+      GLuint getBufferId() const;
+      Target getTarget() const;
 
    private:
       void bufferData_(const Target target, const GLsizei size, const void* data, const Usage usage=StaticDraw);
@@ -80,6 +83,14 @@ inline GLsizei Buffer::getSize() const {
    return size_;
 }
 
+inline GLuint Buffer::getBufferId() const {
+   return buffer_id_;
+}
+
+inline Buffer::Target Buffer::getTarget() const {
+   return target_;
+}
+
 inline void Buffer::bufferData_(const Target target, const GLsizei size, const void* data, const Usage usage) {
    bind();
    size_ = size;
@@ -87,6 +98,10 @@ inline void Buffer::bufferData_(const Target target, const GLsizei size, const v
    usage_ = usage;
    glBufferData(target, size, data, usage);
    logGLError();
+}
+
+inline void Buffer::bindRange(const GLuint& index, const g3::GLintptr& offset, const g3::GLsizeiptr& size) {
+   glBindBufferRange(getTarget(), index, getBufferId(), offset, size);
 }
 
 #endif /* G3_BUFFER_HPP_ */

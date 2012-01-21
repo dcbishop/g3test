@@ -18,7 +18,11 @@ class Program {
       void detach(ShaderPtr shader);
       void attach(Shader& shader);
       void detach(Shader& shader);
+
       GLuint getUniformLocation(const GLchar* name);
+      GLuint uniformBlockIndex(const GLchar* uniformBlockName) const;
+      void uniformBlockBinding(const GLuint& uniformBlockIndex, const GLuint& uniformBlockBinding);
+
       void bindAttribLocation(const GLuint index, const GLchar* name);
       void uniformMatrix(const glm::mat4& matrix, const GLuint index);
       void uniformMatrix(const glm::mat3& matrix, const GLuint index);
@@ -46,6 +50,15 @@ inline GLuint Program::getUniformLocation(const GLchar* name) {
    GLuint location = glGetUniformLocation(program_id_, name);
    logGLError();
    return location;
+}
+
+inline GLuint Program::uniformBlockIndex(const GLchar* uniformBlockName) const {
+   return glGetUniformBlockIndex(program_id_, uniformBlockName);
+}
+
+
+inline void Program::uniformBlockBinding(const GLuint& uniformBlockIndex, const GLuint& uniformBlockBinding) {
+   glUniformBlockBinding(program_id_, uniformBlockIndex, uniformBlockBinding);
 }
 
 inline void Program::bindAttribLocation(const GLuint index, const GLchar* name) {
