@@ -62,6 +62,10 @@ namespace g3 {
       StencilIndex      = GL_STENCIL_INDEX
    };
    extern LookupNames FormatNames;
+   
+   // These arn't defined for me :/
+   typedef ptrdiff_t GLintptr;
+   typedef size_t GLsizeiptr;
 }
 
 #endif /* G3TEST_OPENGL_HPP_ */
