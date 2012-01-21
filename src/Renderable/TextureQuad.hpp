@@ -11,6 +11,7 @@ class TextureQuad {
       TextureQuad();
       ~TextureQuad();
       void render();
+      void setProgram(const ProgramPtr& program);
 
    private:
       void init_();
@@ -21,7 +22,9 @@ class TextureQuad {
 
       static VertexArrayPtr array_;
       static BufferPtr buffer_;
-      static ProgramPtr program_;
+      ProgramPtr program_;
+      GLuint texture_loc_;
+      GLuint time_loc_;
 };
 
 #endif /* G3TEST_TEXTUREQUAD_HPP_ */

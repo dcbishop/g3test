@@ -8,12 +8,14 @@ unsigned int TextureQuad::refs_ = 0;
 
 VertexArrayPtr TextureQuad::array_;
 BufferPtr TextureQuad::buffer_;
-ProgramPtr TextureQuad::program_; 
 
 TextureQuad::TextureQuad() {
    if(!isInitilized_) {
       init_();
    }
+
+   ResourceManager& rm = globals.getResourceManager();
+   setProgram(rm.getVFProgram("FlatTexture.vert", "FlatTexture.frag"));
 
    refs_++;
 
@@ -54,9 +56,6 @@ void TextureQuad::init_() {
    glEnableVertexAttribArray(AttributeIndex::Normal);
    glEnableVertexAttribArray(AttributeIndex::MultiTextCoord0);
 
-   ResourceManager& rm = globals.getResourceManager();
-   program_ = rm.getVFProgram("FlatTexture.vert", "FlatTexture.frag");
-   
    isInitilized_ = true; 
 }
 
@@ -76,9 +75,15 @@ void TextureQuad::deinit_() {
 
 void TextureQuad::render() {
    program_->use();
-   static GLuint texture_loc = program_->getUniformLocation("sampler0");
-   glUniform1i(texture_loc, 0);
+   glUniform1i(texture_loc_, 0);
+   glUniform1f(time_loc_, globals.getGametime());
    array_->bind();
    glDrawArrays(GL_TRIANGLES, 0, 6);
    array_->unbind();
+}
+
+void TextureQuad::setProgram(const ProgramPtr& program) {
+   program_ = program;
+   texture_loc_ = program_->getUniformLocation("sampler0");
+   time_loc_ = program_->getUniformLocation("time");
 }
