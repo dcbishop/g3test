@@ -27,6 +27,5 @@ void main() {
 
    gl_Position = MVPMatrix * Position;
    FlatColor = vec4(Color, 1.0f);
-   
    UVCoord0 = TexCoord0.st;
 }
