@@ -31,6 +31,8 @@ class ErrorMesh {
 
 inline void ErrorMesh::render() {
    glDisable(GL_CULL_FACE);
+   
+   program_->use();
 
    static unsigned int number_of_triangles_0 = vertices_buffer_[0]->getSize()/sizeof(float)*3;
    static unsigned int number_of_triangles_1 = vertices_buffer_[1]->getSize()/sizeof(float)*3;
