@@ -41,6 +41,8 @@ class Buffer {
       void unbind();
       void data(const Target target, const GLsizei size, const void* data, const Usage usage=StaticDraw);
       void data(const GLsizei size, const void* data, const Usage usage=StaticDraw);
+      void subData(const Target& target, const g3::GLintptr& offset, const g3::GLsizeiptr& size, const GLvoid* data);
+      void subData(const g3::GLintptr& offset, const g3::GLsizeiptr& size, const GLvoid* data);
       GLsizei getSize() const;
       GLuint getBufferId() const;
       Target getTarget() const;
@@ -79,6 +81,15 @@ inline void Buffer::data(const GLsizei size, const void* data, const Usage usage
    bufferData_(target_, size, data, usage);
 }
 
+inline void Buffer::subData(const Target& target, const g3::GLintptr& offset, const g3::GLsizeiptr& size, const GLvoid* data) {
+   bind(target);
+   glBufferSubData(target, offset, size, data);
+}
+
+inline void Buffer::subData(const g3::GLintptr& offset, const g3::GLsizeiptr& size, const GLvoid* data) {
+   subData(getTarget(), offset, size, data);
+}
+
 inline GLsizei Buffer::getSize() const {
    return size_;
 }
@@ -92,10 +103,10 @@ inline Buffer::Target Buffer::getTarget() const {
 }
 
 inline void Buffer::bufferData_(const Target target, const GLsizei size, const void* data, const Usage usage) {
-   bind();
    size_ = size;
    target_ = target;
    usage_ = usage;
+   bind();
    glBufferData(target, size, data, usage);
    logGLError();
 }
