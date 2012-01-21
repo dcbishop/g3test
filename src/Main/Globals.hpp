@@ -11,7 +11,11 @@ class Globals {
       const std::string& getGitVersion() const;
       const std::string& getGitSHA1() const;
       const std::string& getBuildType() const;
+
       ResourceManager& getResourceManager() const;
+
+      const float& getGametime() const;
+      const void setGametime(const float& game_time);
 
    private:
       static const std::string build_date_;
@@ -19,6 +23,7 @@ class Globals {
       static const std::string git_sha1_;
       static const std::string build_type_;
       static ResourceManager rm_;
+      static float game_time_;
 };
 
 extern Globals globals;

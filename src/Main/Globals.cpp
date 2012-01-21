@@ -22,6 +22,7 @@ const std::string Globals::git_version_ = GIT_VERSION_;
 const std::string Globals::git_sha1_ = GIT_SHA1_;
 const std::string Globals::build_type_ = BUILD_TYPE_;
 ResourceManager Globals::rm_;
+float Globals::game_time_;
 
 Globals g;
 
@@ -44,4 +45,12 @@ const std::string& Globals::getBuildType() const {
 
 ResourceManager& Globals::getResourceManager() const {
    return rm_;
+}
+
+const float& Globals::getGametime() const {
+   return game_time_;
+}
+
+const void Globals::setGametime(const float& game_time) {
+   game_time_ = game_time;
 }
