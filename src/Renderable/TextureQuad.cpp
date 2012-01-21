@@ -36,11 +36,11 @@ struct G3vec3 {
 void TextureQuad::init_() {
    std::vector<float> vertices {
       -1.0f,  1.0f, 0.0f,     0.0f, 0.0f, 1.0f,    0.0f, 1.0f, 
-       1.0f,  1.0f, 0.0f,     0.0f, 0.0f, 1.0f,    1.0f, 1.0f,
-      -1.0f, -1.0f, 0.0f,     0.0f, 0.0f, 1.0f,    0.0f, 0.0f,
       -1.0f, -1.0f, 0.0f,     0.0f, 0.0f, 1.0f,    0.0f, 0.0f,
        1.0f,  1.0f, 0.0f,     0.0f, 0.0f, 1.0f,    1.0f, 1.0f,
+      -1.0f, -1.0f, 0.0f,     0.0f, 0.0f, 1.0f,    0.0f, 0.0f,
        1.0f, -1.0f, 0.0f,     0.0f, 0.0f, 1.0f,    1.0f, 0.0f,
+       1.0f,  1.0f, 0.0f,     0.0f, 0.0f, 1.0f,    1.0f, 1.0f,
    };
    
    array_ = VertexArrayPtr(new VertexArray);
