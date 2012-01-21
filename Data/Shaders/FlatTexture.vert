@@ -12,14 +12,15 @@
  * You should have received a copy of the CC0 Public Domain Dedication along
  * with this software. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
  */
+
 #version 330
 
 layout(location = 0) in vec4 Position;
-layout(location = 8) in vec3 TexCoord0;
+layout(location = 8) in vec2 TexCoord0;
 
 smooth out vec2 UVCoord0;
 
 void main() {
    gl_Position = Position;
-   UVCoord0 = TexCoord0.st;
+   UVCoord0 = TexCoord0;
 }

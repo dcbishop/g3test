@@ -16,11 +16,10 @@
 
 smooth in vec2 UVCoord0;
 
-layout(location = 0) out vec4 FragColor;
-
 uniform sampler2D sampler0;
 
+layout(location = 0) out vec4 FragColor;
+
 void main() {
-   vec4 texcol = texture2D(sampler0, UVCoord0);
-   FragColor = texcol;
+   FragColor = texture2D(sampler0, UVCoord0);
 }
