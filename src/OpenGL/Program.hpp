@@ -42,39 +42,47 @@ class Program {
 typedef std::shared_ptr<Program> ProgramPtr;
 
 inline GLuint Program::getUniformLocation(const GLchar* name) {
+   use();
    GLuint location = glGetUniformLocation(program_id_, name);
    logGLError();
    return location;
 }
 
 inline void Program::bindAttribLocation(const GLuint index, const GLchar* name) {
+   use();
    glBindAttribLocation(program_id_, index, name);
    logGLError();
 }
 
 inline void Program::uniformMatrix(const glm::mat4& matrix, const GLuint index) {
+   use();
    glUniformMatrix4fv(index, 1, GL_FALSE, &matrix[0][0]);
    logGLError();
 }
 
 inline void Program::uniformMatrix(const glm::mat3& matrix, const GLuint index) {
+   use();
    glUniformMatrix3fv(index, 1, GL_FALSE, &matrix[0][0]);
    logGLError();
 }
 
 inline void Program::uniform(const GLfloat& v0, const GLuint& index) {
+   use();
    glUniform1f(index, v0);
 }
 
 inline void Program::uniform(const glm::vec2& v, const GLuint& index) {
+   use();
    glUniform2f(index, v[0], v[1]);
 }
 
 inline void Program::uniform(const glm::vec3& v, const GLuint& index) {
+   use();
    glUniform3f(index, v[0], v[1], v[2]);
 }
 
 inline void Program::uniform(const glm::vec4& v, const GLuint& index) {
+   use();
    glUniform4f(index, v[0], v[1], v[2], v[3]);
 }
 
