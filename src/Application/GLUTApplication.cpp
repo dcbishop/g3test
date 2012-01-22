@@ -24,6 +24,11 @@ GLUTApplication::GLUTApplication(int& argc, char* argv[]) {
    glutReshapeFunc(resize_);
    glutCreateWindow("GLUT Application");
    glutTimerFunc(1000/60, timer_, 0);
+
+#ifdef USE_GLEW
+   glewInit();
+#endif
+
    demo_scene_ = new DemoScene(800, 600);
 }
 

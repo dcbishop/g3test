@@ -12,6 +12,11 @@ GLWidget::GLWidget(QWidget *parent) :
 }
 
 void GLWidget::initializeGL() {
+
+#ifdef USE_GLEW
+   glewInit();
+#endif
+
    demo_scene_ = shared_ptr<DemoScene>(new DemoScene());
    timer_.start();
    update_timer_.start(16);

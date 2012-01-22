@@ -5,8 +5,14 @@
 #include <vector>
 #include <unordered_map>
 
+#ifdef USE_GLEW
+#include <GL/glew.h>
+#include <GL/gl.h>
+#else
 #define GL3_PROTOTYPES
 #include <GL3/gl3.h>
+#endif
+
 #include <GL/freeglut.h>
 
 #include "../Debug/console.h"

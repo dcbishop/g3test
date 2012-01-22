@@ -11,6 +11,10 @@ SFMLApplication::SFMLApplication() {
 
    LOG("SFML v%d.%d, using OpenGL v%d.%d", SFML_VERSION_MAJOR, SFML_VERSION_MINOR, window_->GetSettings().MajorVersion, window_->GetSettings().MinorVersion);
 
+#ifdef USE_GLEW
+   glewInit();
+#endif
+
    demo_scene_ = new DemoScene();
 }
 

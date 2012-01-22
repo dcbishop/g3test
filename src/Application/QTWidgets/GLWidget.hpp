@@ -10,8 +10,6 @@
 #include <memory>
 using std::shared_ptr;
 
-#include "../../OpenGL/OpenGL.hpp"
-
 class DemoScene;
 
 class GLWidget : public QGLWidget {

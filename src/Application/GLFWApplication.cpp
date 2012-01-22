@@ -35,6 +35,11 @@ void GLFWApplication::run() {
       return;
    }
    glfwSetWindowTitle("GLFW Application");
+   
+#ifdef USE_GLEW
+   glewInit();
+#endif
+
    demo_scene_ = new DemoScene();
    setSize(800, 600);
    while(running) {
