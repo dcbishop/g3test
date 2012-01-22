@@ -4,10 +4,21 @@ using namespace std;
 #include "Globals.hpp"
 #include "../Debug/console.h"
 
-#include "../Application/GLFWApplication.hpp"
-#include "../Application/GLUTApplication.hpp"
-#include "../Application/SFMLApplication.hpp"
+#ifdef USE_QT
 #include "../Application/QTApplication.hpp"
+#endif
+
+#ifdef USE_SFML
+#include "../Application/SFMLApplication.hpp"
+#endif
+
+#ifdef USE_GLFW
+#include "../Application/GLFWApplication.hpp"
+#endif
+
+#ifdef USE_GLUT
+#include "../Application/GLUTApplication.hpp"
+#endif
 
 int main(int argc, char* argv[]) {
    LOG("Starting %s %s %s, built: %s...",
@@ -17,14 +28,25 @@ int main(int argc, char* argv[]) {
       globals.getBuildDate().c_str()
    );
 
-   /*GLUTApplication app(argc, argv);
-   app.run();*/
-   /*SFMLApplication app;
-   app.run();*/
-   /*GLFWApplication app;
-   app.run();*/
+#ifdef USE_QT
    QTApplication app(argc, argv);
    app.run();
+#endif
 
+#ifdef USE_SFML
+   SFMLApplication app;
+   app.run();
+#endif
+   
+#ifdef USE_GLFW
+   GLFWApplication app;
+   app.run();
+#endif
+
+#ifdef USE_GLUT
+   GLUTApplication app(argc, argv);
+   app.run();
+#endif
+   
    LOG("Finished...");
 }
