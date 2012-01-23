@@ -8,7 +8,9 @@
 #ifdef USE_GLEW
 #include <GL/glew.h>
 #include <GL/gl.h>
-#else
+#endif
+
+#ifdef USE_GL3H
 #define GL3_PROTOTYPES
 #include <GL3/gl3.h>
 #endif

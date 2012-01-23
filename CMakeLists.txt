@@ -4,16 +4,17 @@ cmake_minimum_required(VERSION 2.6)
 project( g3test )
 
 # Projects default options
-option( Debug          "Debug"        OFF )
-option( Profile        "Profile"      OFF )
-option( C++11          "C++11"        ON  )
-option( USE_BOOST      "USE_BOOST"    ON  )
-option( USE_GLEW       "USE_GLEW"     ON  )
-option( USE_OPENGL     "USE_OPENGL"   ON  )
-option( USE_QT         "USE_QT"       ON  )
-option( USE_GLFW       "USE_GLFW"     OFF )
-option( USE_SFML       "USE_SFML"     OFF )
-option( USE_GLUT       "USE_GLUT"     OFF )
+option( Debug          "Debug"        	OFF )
+option( Profile        "Profile"      	OFF )
+option( C++11          "C++11"        	ON  )
+option( USE_BOOST      "USE_BOOST"    	ON  )
+option( USE_OPENGL     "USE_OPENGL"   	ON  )
+option( USE_GL3H       "USE_GL3H"      ON  )
+option( USE_GLEW       "USE_GLEW"      ON  )
+option( USE_QT         "USE_QT"        ON  )
+option( USE_GLFW       "USE_GLFW"      OFF )
+option( USE_SFML       "USE_SFML"      OFF )
+option( USE_GLUT       "USE_GLUT"      OFF )
 
 # Set cmake module path
 set(CMAKE_MODULE_PATH
@@ -94,7 +95,11 @@ if(USE_OPENGL)
 endif()
 
 # For GL3/gl3.h
-include_directories("${CMAKE_SOURCE_DIR}/external")
+if(USE_GL3H)
+   include_directories("${CMAKE_SOURCE_DIR}/external")
+   add_definitions(-DUSE_GL3H)
+   message(STATUS "Using gl3.h")
+endif()
 
 # GLEW
 if(USE_GLEW)
