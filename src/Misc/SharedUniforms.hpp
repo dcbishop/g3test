@@ -18,15 +18,15 @@ class SharedUniforms : public Buffer {
       void setNormalMatrix(const glm::mat3& normal_matrix);
       void setResolution(const glm::vec2& resolution);
       void setTime(const GLfloat& time);
-      
+      void updateAll();
+
+      g3::GLsizeiptr getSize() const;
       GLuint getBlockIndex() const;
       GLuint getBindingPoint() const;
       GLuint getBlockSize() const;
       void setBlockSize(const GLuint size);
       void setBlockIndex(const GLuint index);
-      void updateAll();
-
-      g3::GLsizeiptr getSize() const;
+      void bindTo(const ProgramPtr& program) const;
 
    private:
       struct Uniform {
@@ -56,7 +56,7 @@ inline SharedUniforms::SharedUniforms() {
    setTarget(Buffer::Uniform);
    bind();
 
-   ProgramPtr dummy_program_ = globals.getResourceManager().getVFProgram("Basic.vert", "Basic.frag");
+   ProgramPtr dummy_program_ = globals.getResourceManager().getVFProgram("UBODummy.vert", "UBODummy.frag");
 
    // Get the global index of the uniform Block
    setBlockIndex(dummy_program_->getUniformBlockIndex("SharedUniforms"));
@@ -110,12 +110,12 @@ inline SharedUniforms::SharedUniforms() {
       std::string uniform_name_str(&uniform_name.front());
       Uniform uniform {indices.at(i), uniform_name_str, uniform_offset, uniform_size};
       uniforms_[uniform_name_str] = uniform;
-      
+
       DEBUG_M("Uniforms in block: %d, %s, %d, %d", uniform.index, uniform.name.c_str(), uniform.offset, uniform.size);
    }
 
    data(getSize(), nullptr, Buffer::StreamDraw);
-
+   bindRange(getBindingPoint(), 0, getSize());
    unbind();
 }
 
@@ -206,6 +206,10 @@ inline void SharedUniforms::setTime(const GLfloat& time) {
 
 inline g3::GLsizeiptr SharedUniforms::getSize() const {
    return ub_size_;
+}
+
+inline void SharedUniforms::bindTo(const ProgramPtr& program) const {
+   program->uniformBlockBinding(getBlockIndex(), getBindingPoint());
 }
 
 #endif /* G3_SHAREDUNIFORMS_HPP_ */

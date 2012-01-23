@@ -39,8 +39,7 @@ DemoScene::DemoScene(const int width, const int height) {
    program_->use();
    logGLError();
 
-   program_->uniformBlockBinding(ubo_.getBlockIndex(), 0);
-   ubo_.bindRange(ubo_.getBindingPoint(), 0, ubo_.getSize());
+   ubo_.bindTo(program_);
    logGLError();
 
    setSize(width, height);
