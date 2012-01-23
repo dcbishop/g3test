@@ -5,9 +5,14 @@ layout(location = 2) in vec3 Normal;
 layout(location = 3) in vec3 Color;
 layout(location = 8) in vec3 TexCoord0;
 
-uniform mat4 MVMatrix;
-uniform mat4 MVPMatrix;
-uniform mat3 NormalMatrix;
+layout(std140) uniform SharedUniforms {
+   mat4 MVMatrix;
+   mat4 ProjectionMatrix;
+   mat4 MVPMatrix;
+   mat3 NormalMatrix;
+   vec2 resolution;
+   float time;
+};
 
 smooth out vec3 VaryingNormal;
 smooth out vec3 VaryingLightDir;

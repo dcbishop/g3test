@@ -25,7 +25,8 @@ DemoScene::DemoScene(const int width, const int height) {
    cube_ = shared_ptr<Cube>(new Cube());
    cube_rotation_ = 45.0f;
    tq_ = shared_ptr<TextureQuad>(new TextureQuad());
-   tq_->setProgram(rm.getVFProgram("FlatTexture.vert", "FlatTexture.frag"));
+   ProgramPtr flatprog = rm.getVFProgram("FlatTexture.vert", "FlatTexture.frag");
+   tq_->setProgram(flatprog);
 
    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
    glClearDepth(10000.0f);
@@ -38,22 +39,22 @@ DemoScene::DemoScene(const int width, const int height) {
    program_->use();
    logGLError();
 
-   // Bind shader program uniform attributes
-   mv_loc_ = program_->getUniformLocation(UniformName::ModelViewMatrix);
+   program_->uniformBlockBinding(ubo_.getBlockIndex(), 0);
+   ubo_.bindRange(ubo_.getBindingPoint(), 0, ubo_.getSize());
    logGLError();
-   mvp_loc_ = program_->getUniformLocation(UniformName::ModelViewProjectionMatrix);
-   logGLError();
-   nm_loc_ = program_->getUniformLocation(UniformName::NormalMatrix);
-   logGLError();
+
    setSize(width, height);
 }
 
 void DemoScene::bindMatrices_() {
    program_->use();
+   logGLError();
+
    glm::mat4 mvp_matrix = projection_matrix_ * stack_.getMatrix();
-   program_->uniformMatrix(mvp_matrix, mvp_loc_);
-   program_->uniformMatrix(stack_.getMatrix(), mv_loc_);
-   program_->uniformMatrix(stack_.getNormalMatrix(), nm_loc_);
+   ubo_.setModelViewProjectionMatrix(mvp_matrix);
+   ubo_.setModelViewMatrix(stack_.getMatrix());
+   ubo_.setNormalMatrix(stack_.getNormalMatrix());
+   ubo_.setProjectionMatrix(projection_matrix_);
 }
 
 void DemoScene::setSize(const int width, const int height) {
@@ -111,6 +112,7 @@ void DemoScene::setSize(const int width, const int height) {
    logGLError();
    framebuffer_->unbind();
    glViewport(0, 0, width_, height_);
+   ubo_.setResolution(glm::vec2(width, height));
    logGLError();
 }
 
@@ -121,6 +123,7 @@ void DemoScene::update(const float dt) {
       cube_rotation_ -= 360.0f;
    }
    globals.setGametime(globals.getGametime()+dt);
+   ubo_.setTime(globals.getGametime());
 }
 
 void DemoScene::render() {

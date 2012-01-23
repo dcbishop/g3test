@@ -29,7 +29,9 @@ class Program {
          UniformArrayStride = GL_UNIFORM_ARRAY_STRIDE,
          UniformMatrixStride = GL_UNIFORM_MATRIX_STRIDE,
          UniformIsRowMajor = GL_UNIFORM_IS_ROW_MAJOR,
+#ifdef GL_UNIFORM_ATOMIC_COUNTER_BUFFER_INDEX
          UniformAtomicCounterBuffer = GL_UNIFORM_ATOMIC_COUNTER_BUFFER_INDEX
+#endif
       };
 
       Program();

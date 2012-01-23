@@ -14,6 +14,30 @@ Buffer::~Buffer() {
    logGLError();
 }
 
-void Buffer::setTarget(const Target target) {
-   target_ = target;
-}
+LookupNames Buffer::TargetNames = {
+   { GL_ARRAY_BUFFER,               "GL_ARRAY_BUFFER"                },
+#ifdef GL_ATOMIC_COUNTER_BUFFER
+   { GL_ARRAY_BUFFER,               "GL_ATOMIC_COUNTER_BUFFER"       },
+#endif
+   { GL_COPY_READ_BUFFER,           "GL_COPY_READ_BUFFER"            },
+   { GL_COPY_WRITE_BUFFER,          "GL_COPY_WRITE_BUFFER"           },
+   { GL_DRAW_INDIRECT_BUFFER,       "GL_DRAW_INDIRECT_BUFFER"        },
+   { GL_ELEMENT_ARRAY_BUFFER,       "GL_ELEMENT_ARRAY_BUFFER"        },
+   { GL_PIXEL_PACK_BUFFER,          "GL_PIXEL_PACK_BUFFER"           },
+   { GL_PIXEL_UNPACK_BUFFER,        "GL_PIXEL_UNPACK_BUFFER"         },
+   { GL_TEXTURE_BUFFER,             "GL_TEXTURE_BUFFER"              },
+   { GL_TRANSFORM_FEEDBACK_BUFFER,  "GL_TRANSFORM_FEEDBACK_BUFFER"   },
+   { GL_UNIFORM_BUFFER,             "GL_UNIFORM_BUFFER"              }
+};
+
+LookupNames Buffer::UsageNames = {
+   { GL_STATIC_DRAW,    "GL_STATIC_DRAW"  },
+   { GL_STATIC_READ,    "GL_STATIC_READ"  },
+   { GL_STATIC_COPY,    "GL_STATIC_COPY"  },
+   { GL_DYNAMIC_DRAW,   "GL_DYNAMIC_DRAW" },
+   { GL_DYNAMIC_READ,   "GL_DYNAMIC_READ" },
+   { GL_DYNAMIC_COPY,   "GL_DYNAMIC_COPY" },
+   { GL_STREAM_DRAW,    "GL_STREAM_DRAW"  },
+   { GL_STREAM_READ,    "GL_STREAM_READ"  },
+   { GL_STREAM_COPY,    "GL_STREAM_COPY"  }
+};

@@ -7,6 +7,7 @@
 
 #include "../OpenGL/GLMatrixStack.hpp"
 #include "../OpenGL/Program.hpp"
+#include "../Misc/SharedUniforms.hpp"
 
 class Cube;
 class Framebuffer;
@@ -38,9 +39,7 @@ class DemoScene {
       float cube_rotation_;
       glm::mat4 projection_matrix_;
       GLMatrixStack stack_;
-      GLint mvp_loc_;
-      GLint mv_loc_;
-      GLint nm_loc_;
+      SharedUniforms ubo_;
 };
 
 #endif /* G3TEST_DEMOSCENE_HPP_ */
