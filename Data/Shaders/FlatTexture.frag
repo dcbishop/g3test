@@ -14,12 +14,12 @@
 
 #version 330
 
-smooth in vec2 UVCoord0;
+smooth in vec2 VTexCoord0;
 
-uniform sampler2D sampler0;
+uniform sampler2D tex0;
 
-layout(location = 0) out vec4 FragColor;
+layout( location = 0 ) out vec4 Color;
 
 void main() {
-   FragColor = texture2D(sampler0, UVCoord0);
+   Color = texture2D(tex0, VTexCoord0);
 }

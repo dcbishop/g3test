@@ -19,6 +19,7 @@ layout(std140) uniform SharedUniforms {
    mat4 MVMatrix;
    mat4 ProjectionMatrix;
    mat4 MVPMatrix;
+   mat4 ViewportMatrix;
    mat3 NormalMatrix;
    vec2 resolution;
    float time;

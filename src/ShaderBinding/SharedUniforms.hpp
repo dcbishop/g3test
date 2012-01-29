@@ -9,16 +9,28 @@
 #include <glm/glm.hpp>
 #include <unordered_map>
 
+
+// TODO: This class is unstable if some shaders don't load.
 class SharedUniforms : public Buffer {
    public:
+      // This must be kept in sync with SharedUniforms.cpp and GLSL code
+      enum Uniform {
+         MVMatrix,
+         ProjectionMatrix,
+         MVPMatrix,
+         ViewPort,
+         NormalMatrix,
+         Resolution,
+         Time,
+         MaxUniform
+      };
+
       SharedUniforms();
-      void setModelViewMatrix(const glm::mat4& mv_matrix);
-      void setProjectionMatrix(const glm::mat4& mv_matrix);
-      void setModelViewProjectionMatrix(const glm::mat4& mvp_matrix);
-      void setNormalMatrix(const glm::mat3& normal_matrix);
-      void setResolution(const glm::vec2& resolution);
-      void setTime(const GLfloat& time);
-      void updateAll();
+
+      void setUniform(const Uniform uniform, const glm::mat4& value);
+      void setUniform(const Uniform uniform, const glm::mat3& value);
+      void setUniform(const Uniform uniform, const glm::vec2& value);
+      void setUniform(const Uniform uniform, const GLfloat& value);
 
       g3::GLsizeiptr getSize() const;
       GLuint getBlockIndex() const;
@@ -27,16 +39,17 @@ class SharedUniforms : public Buffer {
       void setBlockSize(const GLuint size);
       void setBlockIndex(const GLuint index);
       void bindTo(const ProgramPtr& program) const;
+      static LookupNames UniformNames;
 
    private:
-      struct Uniform {
+      struct UniformInfo {
          GLuint index;
          std::string name;
          GLint offset;
          GLint size;
       };
 
-      struct Shared {
+      /*struct Shared {
          glm::mat4 MVMatrix;
          glm::mat4 ProjectionMatrix;
          glm::mat4 MVPMatrix;
@@ -45,14 +58,18 @@ class SharedUniforms : public Buffer {
          GLfloat time;
       };
 
-      Shared shared_;
-      std::unordered_map<std::string, Uniform> uniforms_;
+      Shared shared_;*/
+      std::unordered_map<std::string, UniformInfo> uniforms_;
+      std::vector<unsigned int> uniform_index_;
+      std::vector<unsigned int> uniform_offsets_;
+      static std::string uniform_block_name;
 
       GLuint ub_index_;
       GLint ub_size_;
 };
 
 inline SharedUniforms::SharedUniforms() {
+   logGLError();
    setTarget(Buffer::Uniform);
    bind();
 
@@ -66,7 +83,7 @@ inline SharedUniforms::SharedUniforms() {
       data(0, nullptr, Buffer::StreamDraw);
       return;
    }
-
+   logGLError();
    // Set the block binding point for the shader program
    dummy_program_->uniformBlockBinding(getBlockIndex(), getBindingPoint());
    
@@ -80,7 +97,7 @@ inline SharedUniforms::SharedUniforms() {
    // Get the length of the uniform block's name
    GLsizei block_name_length; 
    dummy_program_->getActiveUniformBlock(getBlockIndex(), Program::UniformBlockNameLength, &block_name_length);
-
+   logGLError();
    // Get the uniform block's name
    std::vector<GLchar> block_name(block_name_length);
    dummy_program_->getActiveUniformBlockName(getBlockIndex(), block_name_length, nullptr, &block_name.front());
@@ -108,7 +125,7 @@ inline SharedUniforms::SharedUniforms() {
 
       // Create a Uniform object and add it to the list
       std::string uniform_name_str(&uniform_name.front());
-      Uniform uniform {indices.at(i), uniform_name_str, uniform_offset, uniform_size};
+      UniformInfo uniform {indices.at(i), uniform_name_str, uniform_offset, uniform_size};
       uniforms_[uniform_name_str] = uniform;
 
       DEBUG_M("Uniforms in block: %d, %s, %d, %d", uniform.index, uniform.name.c_str(), uniform.offset, uniform.size);
@@ -117,6 +134,35 @@ inline SharedUniforms::SharedUniforms() {
    data(getSize(), nullptr, Buffer::StreamDraw);
    bindRange(getBindingPoint(), 0, getSize());
    unbind();
+   logGLError();
+
+   // We should have found all the uniforms in the central list...
+   if(uniforms_.size() < MaxUniform) {
+      ERROR("Failed to find all uniforms.");
+      uniform_index_.resize(MaxUniform);
+      uniform_offsets_.resize(MaxUniform);
+      return;
+   }
+
+   // Add the uniform id's to a vector for quick indexed retrieval...
+   uniform_index_.resize(uniforms_.size());
+   uniform_index_[MVMatrix] = std::distance(uniforms_.begin(), uniforms_.find("MVMatrix"));
+   uniform_index_[ProjectionMatrix] = std::distance(uniforms_.begin(), uniforms_.find("ProjectionMatrix"));
+   uniform_index_[MVPMatrix] = std::distance(uniforms_.begin(), uniforms_.find("MVPMatrix"));
+   uniform_index_[ViewPort] = std::distance(uniforms_.begin(), uniforms_.find("ViewportMatrix"));
+   uniform_index_[NormalMatrix] = std::distance(uniforms_.begin(), uniforms_.find("NormalMatrix"));
+   uniform_index_[Resolution] = std::distance(uniforms_.begin(), uniforms_.find("resolution"));
+   uniform_index_[Time] = std::distance(uniforms_.begin(), uniforms_.find("time"));
+
+   // Add the uniform offsets to a vector for quick indexed retrieval...
+   uniform_offsets_.resize(uniforms_.size());
+   uniform_offsets_[MVMatrix] = uniforms_.at("MVMatrix").offset;
+   uniform_offsets_[ProjectionMatrix] = uniforms_.at("ProjectionMatrix").offset;
+   uniform_offsets_[MVPMatrix] = uniforms_.at("MVPMatrix").offset;
+   uniform_offsets_[ViewPort] = uniforms_.at("ViewportMatrix").offset;
+   uniform_offsets_[NormalMatrix] = uniforms_.at("NormalMatrix").offset;
+   uniform_offsets_[Resolution] = uniforms_.at("resolution").offset;
+   uniform_offsets_[Time] = uniforms_.at("time").offset;
 }
 
 inline GLuint SharedUniforms::getBlockIndex() const {
@@ -139,69 +185,20 @@ inline void SharedUniforms::setBlockIndex(const GLuint index) {
    ub_index_ = index;
 }
 
-inline void SharedUniforms::updateAll() {
-   bind();
-   subData(0, getSize(), &shared_);
+inline void SharedUniforms::setUniform(const Uniform uniform, const glm::mat4& value) {
+   subData(uniform_offsets_[uniform], sizeof(value), &value[0]);
 }
 
-inline void SharedUniforms::setModelViewMatrix(const glm::mat4& mv_matrix) {
-   if(uniforms_.size() < 1) {
-      return;
-   }
-   bind();
-   static g3::GLintptr offset = uniforms_.at("MVMatrix").offset;
-   static g3::GLsizeiptr size = sizeof(mv_matrix);
-   subData(offset, size, &mv_matrix[0][0]);
+inline void SharedUniforms::setUniform(const Uniform uniform, const glm::mat3& value) {
+   subData(uniform_offsets_[uniform], sizeof(value), &value[0]);
 }
 
-inline void SharedUniforms::setProjectionMatrix(const glm::mat4& projection_matrix) {
-   if(uniforms_.size() < 2) {
-      return;
-   }
-   bind();
-   static g3::GLintptr offset = uniforms_.at("ProjectionMatrix").offset;
-   static g3::GLsizeiptr size = sizeof(projection_matrix);
-   subData(offset, size, &projection_matrix[0][0]);
+inline void SharedUniforms::setUniform(const Uniform uniform, const glm::vec2& value) {
+   subData(uniform_offsets_[uniform], sizeof(value), &value[0]);
 }
 
-inline void SharedUniforms::setModelViewProjectionMatrix(const glm::mat4& mvp_matrix) {
-   if(uniforms_.size() < 3) {
-      return;
-   }
-   bind();
-   static g3::GLintptr offset = uniforms_.at("MVPMatrix").offset;
-   static g3::GLsizeiptr size = sizeof(mvp_matrix);
-   subData(offset, size, &mvp_matrix[0][0]);
-}
-
-inline void SharedUniforms::setNormalMatrix(const glm::mat3& normal_matrix) {
-   if(uniforms_.size() < 4) {
-      return;
-   }
-   bind();
-   static g3::GLintptr offset = uniforms_.at("NormalMatrix").offset;
-   static g3::GLsizeiptr size = sizeof(normal_matrix);
-   subData(offset, size, &normal_matrix[0][0]);
-}
-
-inline void SharedUniforms::setResolution(const glm::vec2& resolution) {
-   if(uniforms_.size() < 5) {
-      return;
-   }
-   bind();
-   static g3::GLintptr offset = uniforms_.at("resolution").offset;
-   static g3::GLsizeiptr size = sizeof(resolution);
-   subData(offset, size, &resolution[0]);
-}
-
-inline void SharedUniforms::setTime(const GLfloat& time) {
-   if(uniforms_.size() < 6) {
-      return;
-   }
-   bind();
-   static g3::GLintptr offset = uniforms_.at("time").offset;
-   static g3::GLsizeiptr size = sizeof(time);
-   subData(offset, size, &time);
+inline void SharedUniforms::setUniform(const Uniform uniform, const GLfloat& value) {
+   subData(uniform_offsets_[uniform], sizeof(value), &value);
 }
 
 inline g3::GLsizeiptr SharedUniforms::getSize() const {
@@ -209,7 +206,11 @@ inline g3::GLsizeiptr SharedUniforms::getSize() const {
 }
 
 inline void SharedUniforms::bindTo(const ProgramPtr& program) const {
-   program->uniformBlockBinding(getBlockIndex(), getBindingPoint());
+   GLuint index = program->getUniformBlockIndex(uniform_block_name.c_str());
+   if(index == GL_INVALID_INDEX) {
+      return;
+   }
+   program->uniformBlockBinding(index, getBindingPoint());
 }
 
 #endif /* G3_SHAREDUNIFORMS_HPP_ */

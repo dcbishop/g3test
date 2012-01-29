@@ -15,12 +15,12 @@
 
 #version 330
 
-layout(location = 0) in vec4 Position;
-layout(location = 8) in vec2 TexCoord0;
+layout( location = 0 ) in vec4 Position;
+layout( location = 8 ) in vec2 TexCoord0;
 
-smooth out vec2 UVCoord0;
+smooth out vec2 VTexCoord0;
 
 void main() {
    gl_Position = Position;
-   UVCoord0 = TexCoord0;
+   VTexCoord0 = TexCoord0;
 }

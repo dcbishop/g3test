@@ -7,7 +7,7 @@
 
 #include "../OpenGL/GLMatrixStack.hpp"
 #include "../OpenGL/Program.hpp"
-#include "../Misc/SharedUniforms.hpp"
+#include "../ShaderBinding/ShaderManager.hpp"
 
 class Cube;
 class Framebuffer;
@@ -32,14 +32,13 @@ class DemoScene {
       std::vector<std::shared_ptr<Texture>> texture_;
       int width_;
       int height_;
-      ProgramPtr program_;
       std::shared_ptr<Cube> cube_;
       std::shared_ptr<ErrorMesh> em_;
       std::shared_ptr<TextureQuad> tq_;
       float cube_rotation_;
       glm::mat4 projection_matrix_;
       GLMatrixStack stack_;
-      SharedUniforms ubo_;
+      ShaderManagerPtr sm_;
 };
 
 #endif /* G3TEST_DEMOSCENE_HPP_ */

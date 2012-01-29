@@ -20,40 +20,28 @@ DemoScene::DemoScene(const int width, const int height) {
    using std::shared_ptr;
 
    ResourceManager& rm = globals.getResourceManager();
-
+   sm_ = ShaderManagerPtr(new ShaderManager);
    em_ = shared_ptr<ErrorMesh>(new ErrorMesh());
    cube_ = shared_ptr<Cube>(new Cube());
    cube_rotation_ = 45.0f;
    tq_ = shared_ptr<TextureQuad>(new TextureQuad());
-   ProgramPtr flatprog = rm.getVFProgram("FlatTexture.vert", "FlatTexture.frag");
-   tq_->setProgram(flatprog);
+   tq_->setProgram(sm_->getProgram(ShaderManager::FlatTexture));
 
    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
    glClearDepth(10000.0f);
    glEnable(GL_CULL_FACE);
 
-   // Load the vertex/fragment shader.
-   program_ = rm.getVFProgram("Basic.vert", "Basic.frag");
-   program_->debugLog();
-   logGLError();
-   program_->use();
-   logGLError();
-
-   ubo_.bindTo(program_);
-   logGLError();
-
    setSize(width, height);
 }
 
 void DemoScene::bindMatrices_() {
-   program_->use();
-   logGLError();
-
+   static SharedUniforms ubo_ = sm_->getSharedUniforms();
    glm::mat4 mvp_matrix = projection_matrix_ * stack_.getMatrix();
-   ubo_.setModelViewProjectionMatrix(mvp_matrix);
-   ubo_.setModelViewMatrix(stack_.getMatrix());
-   ubo_.setNormalMatrix(stack_.getNormalMatrix());
-   ubo_.setProjectionMatrix(projection_matrix_);
+
+   sm_->setUniform(SharedUniforms::MVPMatrix, mvp_matrix);
+   sm_->setUniform(SharedUniforms::MVMatrix, stack_.getMatrix());
+   sm_->setUniform(SharedUniforms::NormalMatrix, stack_.getNormalMatrix());
+   sm_->setUniform(SharedUniforms::ProjectionMatrix, projection_matrix_);
 }
 
 void DemoScene::setSize(const int width, const int height) {
@@ -65,9 +53,8 @@ void DemoScene::setSize(const int width, const int height) {
       glm::vec3(0.0f, 0.0f, 2.0f),
       glm::vec3(0.0f, 0.0f, 0.0f),
       glm::vec3(0.0f, 1.0f, 0.0f));
+   sm_->setUniform(SharedUniforms::ViewPort, glm::ortho(0.0f, (float)width_, 0.0f, (float)height_, 0.1f, 10000.0f));
    bindMatrices_();
-
-   logGLError();
 
    colorbuffer_ = RenderbufferPtr(new Renderbuffer);
    colorbuffer_->bind();
@@ -80,7 +67,6 @@ void DemoScene::setSize(const int width, const int height) {
    depthbuffer_->storage(g3::DepthComponnt24, width_, height_);
 
    logGLError();
-
 
    texture_.push_back(TexturePtr(new Texture));
    glActiveTexture(GL_TEXTURE0);
@@ -111,7 +97,7 @@ void DemoScene::setSize(const int width, const int height) {
    logGLError();
    framebuffer_->unbind();
    glViewport(0, 0, width_, height_);
-   ubo_.setResolution(glm::vec2(width, height));
+   sm_->setUniform(SharedUniforms::Resolution, glm::vec2(width, height));
    logGLError();
 }
 
@@ -121,8 +107,9 @@ void DemoScene::update(const float dt) {
    if(cube_rotation_ > 360.0f) {
       cube_rotation_ -= 360.0f;
    }
+
    globals.setGametime(globals.getGametime()+dt);
-   ubo_.setTime(globals.getGametime());
+   sm_->setUniform(SharedUniforms::Time, globals.getGametime());
 }
 
 void DemoScene::render() {
