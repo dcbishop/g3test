@@ -22,24 +22,34 @@ class VertexArray {
          TrianglesAdjancey       = GL_TRIANGLES_ADJACENCY,
          Patches                 = GL_PATCHES
       };
+      
+      enum Type: GLenum {
+         Unsignedbyte            = GL_UNSIGNED_BYTE,
+         UnsignedShort           = GL_UNSIGNED_SHORT,
+         UnsignedInt             = GL_UNSIGNED_INT
+      };
 
       VertexArray();      
       ~VertexArray();
       void bind() const;
       static void unbind();
       void draw() const;
-      void draw(Mode mode, GLint first, GLsizei count) const;
-
+      void draw(const Mode mode, const GLint first, const GLsizei count) const;
+      void drawElements() const;
+      void drawElements(const Mode mode, const GLsizei count, const Type type, const GLvoid* indices = nullptr) const;
 
       void setMode(const Mode mode);
       void setCount(const GLsizei count);
+      void setType(const Type type);
       Mode getMode() const;
+      Type getType() const;
       GLsizei getCount() const;
 
    private:
       GLuint array_;
       Mode mode_;
       GLsizei count_;
+      Type type_;
 };
 typedef std::shared_ptr<VertexArray> VertexArrayPtr;
 
@@ -62,13 +72,21 @@ inline void VertexArray::unbind() {
 }
 
 inline void VertexArray::draw() const {
-   bind();
-   draw(mode_, 0, count_);
+   draw(getMode(), 0, getCount());
 }
 
 inline void VertexArray::draw(Mode mode, GLint first, GLsizei count) const {
    bind();
    glDrawArrays(mode, first, count);
+}
+
+inline void VertexArray::drawElements() const {
+   drawElements(getMode(), getCount(), getType());
+}
+
+inline void VertexArray::drawElements(const Mode mode, const GLsizei count, const Type type, const GLvoid* indices) const {
+   bind();
+   glDrawElements(mode, count, type, indices);
 }
 
 inline void VertexArray::setMode(const Mode mode) {
@@ -79,12 +97,20 @@ inline void VertexArray::setCount(const GLsizei count) {
    count_ = count;
 }
 
+inline void VertexArray::setType(const Type type) {
+   type_ = type;
+}
+
 inline VertexArray::Mode VertexArray::getMode() const {
    return mode_;
 }
 
 inline GLsizei VertexArray::getCount() const {
    return count_;
+}
+
+inline VertexArray::Type VertexArray::getType() const {
+   return type_;
 }
 
 #endif /*  G3TEST_VERTEXARRAY_HPP_ */
