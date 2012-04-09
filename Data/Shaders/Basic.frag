@@ -18,7 +18,7 @@ uniform sampler2D tex0;
 
 void main() {
    vec4 ambientColor = vec4(0.0, 0.0, 0.0, 1.0);
-   vec4 texcol = texture2D(sampler0, VTexCoord0);
+   vec4 texcol = texture2D(tex0, VTexCoord0);
 
    float diffuse_intensity = max(0.0, dot(normalize(VNormal), normalize(VLightDir)));
    Color = diffuse_intensity * (material.diffuseColor + VColor);

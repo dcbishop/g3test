@@ -3,7 +3,7 @@
 layout( location = 0 ) in vec4 Position;
 layout( location = 2 ) in vec3 Normal;
 layout( location = 3 ) in vec3 Color;
-layout( location = 8 ) in vec3 TexCoord0;
+layout( location = 8 ) in vec2 TexCoord0;
 
 layout(std140) uniform SharedUniforms {
    mat4 MVMatrix;
