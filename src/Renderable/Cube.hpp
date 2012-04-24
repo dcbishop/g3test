@@ -4,7 +4,6 @@
 #include <glm/glm.hpp>
 
 #include "../OpenGL/OpenGL.hpp"
-#include <GL/freeglut.h>
 
 #include "../OpenGL/VertexArray.hpp"
 #include "../OpenGL/Buffer.hpp"

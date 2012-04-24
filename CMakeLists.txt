@@ -148,7 +148,7 @@ list(REMOVE_ITEM SOURCES ${QT_SOURCES} ${SFML_SOURCES} ${GLUT_SOURCES} ${GLFW_SO
 
 # QT target
 if(USE_QT)
-   find_package(Qt4 4.6 COMPONENTS QtCore QtGui QtOpenGL REQUIRED)
+   find_package(Qt4 COMPONENTS QtCore QtGui QtOpenGL REQUIRED)
    include(${QT_USE_FILE})
    QT4_WRAP_CPP(QT_SOURCES ${qt_HPP})
 

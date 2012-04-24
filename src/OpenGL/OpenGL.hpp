@@ -15,7 +15,9 @@
 #include <GL3/gl3.h>
 #endif
 
+#ifdef USE_GLUT
 #include <GL/freeglut.h>
+#endif
 
 #include "../Debug/console.h"
 
