@@ -8,22 +8,21 @@
 #include <tuple> 
 #include <boost/filesystem.hpp>
 
-#include "../OpenGL/Program.hpp"
-#include "../OpenGL/Shader.hpp"
+#include <dglw/dglw.hpp>
 
-typedef std::unordered_map<std::string, ShaderPtr> ShaderMap;
-typedef std::unordered_map<std::string, ProgramPtr> ProgramMap;
+typedef std::unordered_map<std::string, dglw::ShaderPtr> ShaderMap;
+typedef std::unordered_map<std::string, dglw::ProgramPtr> ProgramMap;
 
 class ResourceManager {   
    public:
       ResourceManager();
 
-      ProgramPtr getVFProgram(const std::string& vertfile, const std::string& fragfile);
-      ShaderPtr getShader(const std::string& filename, const Shader::Type& type);
-      ShaderPtr getVertexShader(const std::string& filename);
-      ShaderPtr getFragmentShader(const std::string& filename);
+      dglw::ProgramPtr getVFProgram(const std::string& vertfile, const std::string& fragfile);
+      dglw::ShaderPtr getShader(const std::string& filename, const dglw::Shader::Type& type);
+      dglw::ShaderPtr getVertexShader(const std::string& filename);
+      dglw::ShaderPtr getFragmentShader(const std::string& filename);
 
-      ProgramPtr getShaderProgram(const std::string& filename);
+      dglw::ProgramPtr getShaderProgram(const std::string& filename);
 
    private:
       std::vector<boost::filesystem::path> findDataPaths_();
@@ -31,7 +30,7 @@ class ResourceManager {
       boost::filesystem::path findShaderFile_(const boost::filesystem::path& filename);
       std::vector<char> readIntoVector_(const boost::filesystem::path& filename);
 
-      ShaderPtr loadShader_(const boost::filesystem::path& filename, const Shader::Type& type);
+      dglw::ShaderPtr loadShader_(const boost::filesystem::path& filename, const dglw::Shader::Type& type);
 
       ShaderMap shaders_;
       ProgramMap programs_;

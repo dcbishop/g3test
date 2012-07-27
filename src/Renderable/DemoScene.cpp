@@ -1,5 +1,7 @@
 #include "DemoScene.hpp"
 
+using namespace dglw;
+
 #include <string>
 using std::string;
 
@@ -8,11 +10,7 @@ using std::string;
 #include "../Renderable/ErrorMesh.hpp"
 #include "../Renderable/TextureQuad.hpp"
 #include "../Main/ResourceManager.hpp"
-#include "../OpenGL/OpenGL.hpp"
-#include "../OpenGL/Shader.hpp"
-#include "../OpenGL/Framebuffer.hpp"
-#include "../OpenGL/Renderbuffer.hpp"
-#include "../OpenGL/Texture.hpp"
+#include <dglw/dglw.hpp>
 
 #include "../Debug/console.h"
 
@@ -56,22 +54,22 @@ void DemoScene::setSize(const int width, const int height) {
    sm_->setUniform(SharedUniforms::ViewPort, glm::ortho(0.0f, (float)width_, 0.0f, (float)height_, 0.1f, 10000.0f));
    bindMatrices_();
 
-   colorbuffer_ = RenderbufferPtr(new Renderbuffer);
+   colorbuffer_ = dglw::RenderbufferPtr(new Renderbuffer);
    colorbuffer_->bind();
-   colorbuffer_->storage(g3::RGBA, width_, height_);
+   colorbuffer_->storage(dglw::RGBA, width_, height_);
 
    logGLError();
 
    depthbuffer_ = RenderbufferPtr(new Renderbuffer);
    depthbuffer_->bind();
-   depthbuffer_->storage(g3::DepthComponnt24, width_, height_);
+   depthbuffer_->storage(dglw::DepthComponnt24, width_, height_);
 
    logGLError();
 
    texture_.push_back(TexturePtr(new Texture));
    glActiveTexture(GL_TEXTURE0);
    texture_[0]->bind(Texture::Texture2D);
-   texture_[0]->image2D(Texture::Texture2D, 0, g3::RGBA, width_, height_,
+   texture_[0]->image2D(Texture::Texture2D, 0, dglw::RGBA, width_, height_,
                      0, Texture::RGBA, Texture::UnsignedByte, nullptr);
    texture_[0]->setMinFilter(Texture::Linear);
    texture_[0]->setMagFilter(Texture::Linear);
@@ -79,7 +77,7 @@ void DemoScene::setSize(const int width, const int height) {
    texture_.push_back(TexturePtr(new Texture));
    glActiveTexture(GL_TEXTURE1);
    texture_[1]->bind(Texture::Texture2D);
-   texture_[1]->image2D(Texture::Texture2D, 0, g3::RGBA, width_, height_,
+   texture_[1]->image2D(Texture::Texture2D, 0, dglw::RGBA, width_, height_,
                      0, Texture::RGBA, Texture::UnsignedByte, nullptr);
    texture_[1]->setMinFilter(Texture::Linear);
    texture_[1]->setMagFilter(Texture::Linear);

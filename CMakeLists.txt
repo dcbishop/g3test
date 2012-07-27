@@ -117,12 +117,17 @@ if(USE_BOOST)
    if(Boost_FOUND)
       include_directories(${Boost_INCLUDE_DIRS})
       add_definitions(-DHAVE_BOOST)
-      #target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES})
       set(COMMON_LIBS ${COMMON_LIBS} ${Boost_LIBRARIES})
    endif()
 endif()
 
-# TODO: Starting with CMAKE 2.8.6 there is automoc.
+# Add dglw libs
+find_package(dglw REQUIRED)
+include_directories(${DGLW_INCLUDE_DIRS})
+set(COMMON_LIBS ${COMMON_LIBS} ${DGLW_LIBRARIES})
+message("Debug: ${DGLW_INCLUDE_DIRS} ${DGLW_LIBRARIES}")
+
+# [TODO]: Starting with CMAKE 2.8.6 there is automoc.
 # See: http://blogs.kde.org/node/4495
 #set(CMAKE_AUTOMOC TRUE)
 

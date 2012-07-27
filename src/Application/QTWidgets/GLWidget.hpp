@@ -1,7 +1,7 @@
 ﻿#ifndef G3TEST_GLWIDGET_HPP_
 #define G3TEST_GLWIDGET_HPP_
 
-#include "../../OpenGL/OpenGL.hpp"
+#include <dglw/dglw.hpp>
 
 #include <QGLWidget>
 #include <QTimer>

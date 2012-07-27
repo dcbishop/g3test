@@ -1,17 +1,14 @@
 #ifndef G3TEST_TEXTUREQUAD_HPP_
 #define G3TEST_TEXTUREQUAD_HPP_
 
-#include "../OpenGL/OpenGL.hpp"
-#include "../OpenGL/VertexArray.hpp"
-#include "../OpenGL/Buffer.hpp"
-#include "../OpenGL/Program.hpp"
+#include <dglw/dglw.hpp>
 
 class TextureQuad {
    public:
       TextureQuad();
       ~TextureQuad();
       void render();
-      void setProgram(const ProgramPtr& program);
+      void setProgram(const dglw::ProgramPtr& program);
 
    private:
       void init_();
@@ -20,9 +17,9 @@ class TextureQuad {
       static unsigned int refs_;
       static bool isInitilized_;
 
-      static VertexArrayPtr array_;
-      static BufferPtr buffer_;
-      ProgramPtr program_;
+      static dglw::VertexArrayPtr array_;
+      static dglw::BufferPtr buffer_;
+      dglw::ProgramPtr program_;
       GLuint texture_loc_;
       GLuint time_loc_;
 };

@@ -5,16 +5,16 @@
 
 #include <glm/glm.hpp>
 
-#include "../OpenGL/GLMatrixStack.hpp"
-#include "../OpenGL/Program.hpp"
 #include "../ShaderBinding/ShaderManager.hpp"
 
 class Cube;
-class Framebuffer;
-class Renderbuffer;
-class Texture;
+/*class dglw::Framebuffer;
+class dglw::Renderbuffer;
+class dglw::Texture;*/
 class ErrorMesh;
 class TextureQuad;
+
+#include <dglw/dglw.hpp>
 
 class DemoScene {
    public:
@@ -26,10 +26,10 @@ class DemoScene {
    private:
       void bindMatrices_();
 
-      std::shared_ptr<Framebuffer> framebuffer_;
-      std::shared_ptr<Renderbuffer> colorbuffer_;
-      std::shared_ptr<Renderbuffer> depthbuffer_;
-      std::vector<std::shared_ptr<Texture>> texture_;
+      std::shared_ptr<dglw::Framebuffer> framebuffer_;
+      std::shared_ptr<dglw::Renderbuffer> colorbuffer_;
+      std::shared_ptr<dglw::Renderbuffer> depthbuffer_;
+      std::vector<std::shared_ptr<dglw::Texture>> texture_;
       int width_;
       int height_;
       std::shared_ptr<Cube> cube_;
@@ -37,7 +37,7 @@ class DemoScene {
       std::shared_ptr<TextureQuad> tq_;
       float cube_rotation_;
       glm::mat4 projection_matrix_;
-      GLMatrixStack stack_;
+      dglw::MatrixStack stack_;
       ShaderManagerPtr sm_;
 };
 

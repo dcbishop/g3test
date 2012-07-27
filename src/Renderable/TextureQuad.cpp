@@ -1,5 +1,7 @@
 #include "TextureQuad.hpp"
 
+using namespace dglw;
+
 #include "../Main/Globals.hpp"
 #include "../Main/ResourceManager.hpp"
 

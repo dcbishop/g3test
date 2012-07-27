@@ -3,7 +3,7 @@
 // These are the names as they appear in the shader. They must be kept
 // in sync with the enum in SharedUniforms.cpp and the GLSL uniform
 // block code.
-LookupNames SharedUniforms::UniformNames {
+dglw::LookupNames SharedUniforms::UniformNames {
    { MVMatrix,             "MVMatrix"           },
    { ProjectionMatrix,     "ProjectionMatrix"   },
    { MVPMatrix,            "MVPMatrix"          },

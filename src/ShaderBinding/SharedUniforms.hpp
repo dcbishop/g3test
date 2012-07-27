@@ -1,8 +1,8 @@
 #ifndef G3_SHAREDUNIFORMS_HPP_
 #define G3_SHAREDUNIFORMS_HPP_
 
-#include "../OpenGL/OpenGL.hpp"
-#include "../OpenGL/Buffer.hpp"
+#include <dglw/dglw.hpp>
+
 #include "../Main/Globals.hpp"
 #include "../Main/ResourceManager.hpp"
 
@@ -10,8 +10,10 @@
 #include <unordered_map>
 
 
-// TODO: This class is unstable if some shaders don't load.
-class SharedUniforms : public Buffer {
+// [TODO]: This class is unstable if some shaders don't load.
+// [TODO]: This might be better in libdglw but it hooks into resource manager to
+// load a fake shader and has hard coded variable names. Redesign me!
+class SharedUniforms : public dglw::Buffer {
    public:
       // This must be kept in sync with SharedUniforms.cpp and GLSL code
       enum Uniform {
@@ -32,14 +34,14 @@ class SharedUniforms : public Buffer {
       void setUniform(const Uniform uniform, const glm::vec2& value);
       void setUniform(const Uniform uniform, const GLfloat& value);
 
-      g3::GLsizeiptr getSize() const;
+      dglw::GLsizeiptr getSize() const;
       GLuint getBlockIndex() const;
       GLuint getBindingPoint() const;
       GLuint getBlockSize() const;
       void setBlockSize(const GLuint size);
       void setBlockIndex(const GLuint index);
-      void bindTo(const ProgramPtr& program) const;
-      static LookupNames UniformNames;
+      void bindTo(const dglw::ProgramPtr& program) const;
+      static dglw::LookupNames UniformNames;
 
    private:
       struct UniformInfo {
@@ -69,6 +71,7 @@ class SharedUniforms : public Buffer {
 };
 
 inline SharedUniforms::SharedUniforms() {
+   using namespace dglw;
    logGLError();
    setTarget(Buffer::Uniform);
    bind();
@@ -201,11 +204,11 @@ inline void SharedUniforms::setUniform(const Uniform uniform, const GLfloat& val
    subData(uniform_offsets_[uniform], sizeof(value), &value);
 }
 
-inline g3::GLsizeiptr SharedUniforms::getSize() const {
+inline dglw::GLsizeiptr SharedUniforms::getSize() const {
    return ub_size_;
 }
 
-inline void SharedUniforms::bindTo(const ProgramPtr& program) const {
+inline void SharedUniforms::bindTo(const dglw::ProgramPtr& program) const {
    GLuint index = program->getUniformBlockIndex(uniform_block_name.c_str());
    if(index == GL_INVALID_INDEX) {
       return;

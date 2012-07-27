@@ -3,6 +3,7 @@
 #include <vector>
 using std::vector;
 
+using namespace dglw;
 
 #include "../Debug/console.h"
 

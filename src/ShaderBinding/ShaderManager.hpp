@@ -25,17 +25,18 @@ class ShaderManager {
       void setUniform(const SharedUniforms::Uniform uniform_name, const glm::vec2& value);
       void setUniform(const SharedUniforms::Uniform uniform_name, const GLfloat& value);
 
-      ProgramPtr getProgram(const Mode mode) const;
+      dglw::ProgramPtr getProgram(const Mode mode) const;
       SharedUniforms& getSharedUniforms();
 
    private:
-      std::vector<ProgramPtr> shaders_;
+      std::vector<dglw::ProgramPtr> shaders_;
       SharedUniforms ubo_;
 };
 
 typedef std::shared_ptr<ShaderManager> ShaderManagerPtr;
 
 inline ShaderManager::ShaderManager() {
+   using namespace dglw;
    logGLError();
    ResourceManager& rm =  globals.getResourceManager();
    logGLError();
@@ -79,7 +80,7 @@ inline SharedUniforms& ShaderManager::getSharedUniforms() {
    return ubo_;
 }
 
-inline ProgramPtr ShaderManager::getProgram(const Mode mode) const {
+inline dglw::ProgramPtr ShaderManager::getProgram(const Mode mode) const {
    return shaders_[mode];
 };
 

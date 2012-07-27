@@ -2,11 +2,7 @@
 #define G3TEST_CUBE_HPP_
 
 #include <glm/glm.hpp>
-
-#include "../OpenGL/OpenGL.hpp"
-
-#include "../OpenGL/VertexArray.hpp"
-#include "../OpenGL/Buffer.hpp"
+#include <dglw/dglw.hpp>
 
 class Cube {
    public:
@@ -19,8 +15,8 @@ class Cube {
    private:
       glm::vec3 position_;
       glm::vec4 rotation_;
-      VertexArray array_;
-      Buffer buffer_;
+      dglw::VertexArray array_;
+      dglw::Buffer buffer_;
       static bool isInitilized_;
       static unsigned int refs_;
 };

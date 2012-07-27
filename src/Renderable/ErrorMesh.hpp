@@ -3,9 +3,7 @@
 
 #include <vector>
 
-#include "../OpenGL/VertexArray.hpp"
-#include "../OpenGL/Buffer.hpp"
-#include "../OpenGL/Program.hpp"
+#include <dglw/dglw.hpp>
 
 /**
  * A ERROR placeholder mesh
@@ -24,12 +22,14 @@ class ErrorMesh {
       static unsigned int refs_;
 
       const static unsigned int num_meshes_;
-      static std::vector<VertexArrayPtr> array_;
-      static std::vector<BufferPtr> vertices_buffer_;
-      static ProgramPtr program_;
+      static std::vector<dglw::VertexArrayPtr> array_;
+      static std::vector<dglw::BufferPtr> vertices_buffer_;
+      static dglw::ProgramPtr program_;
 };
 
 inline void ErrorMesh::render() {
+   using namespace dglw;
+
    glDisable(GL_CULL_FACE);
    
    program_->use();

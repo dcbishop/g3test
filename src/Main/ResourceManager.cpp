@@ -1,5 +1,7 @@
 #include "ResourceManager.hpp"
 
+using namespace dglw;
+
 #include <fstream>
 
 #include "../Debug/console.h"
