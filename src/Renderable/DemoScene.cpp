@@ -6,13 +6,12 @@ using namespace dglw;
 using std::string;
 
 #include "../Main/Globals.hpp"
-#include "../Renderable/Cube.hpp"
-#include "../Renderable/ErrorMesh.hpp"
-#include "../Renderable/TextureQuad.hpp"
-#include "../Main/ResourceManager.hpp"
 #include <dglw/dglw.hpp>
+#include "../Renderable/ErrorMesh.hpp"
 
 #include "../Debug/console.h"
+
+using namespace dglw;
 
 DemoScene::DemoScene(const int width, const int height) {
    using std::shared_ptr;
@@ -20,10 +19,11 @@ DemoScene::DemoScene(const int width, const int height) {
    ResourceManager& rm = globals.getResourceManager();
    sm_ = ShaderManagerPtr(new ShaderManager);
    em_ = shared_ptr<ErrorMesh>(new ErrorMesh());
-   cube_ = shared_ptr<Cube>(new Cube());
+   cube_ = shared_ptr<dglw::Cube>(new Cube());
    cube_rotation_ = 45.0f;
    tq_ = shared_ptr<TextureQuad>(new TextureQuad());
-   tq_->setProgram(sm_->getProgram(ShaderManager::FlatTexture));
+   // [TODO]: dglw doesn't support setting programs directly on the quads
+   //tq_->setProgram(sm_->getProgram(ShaderManager::FlatTexture));
 
    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
    glClearDepth(10000.0f);

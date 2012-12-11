@@ -4,7 +4,6 @@
 #include <dglw/dglw.hpp>
 
 #include "../Main/Globals.hpp"
-#include "../Main/ResourceManager.hpp"
 
 #include <glm/glm.hpp>
 #include <unordered_map>
@@ -128,7 +127,8 @@ inline SharedUniforms::SharedUniforms() {
 
       // Create a Uniform object and add it to the list
       std::string uniform_name_str(&uniform_name.front());
-      UniformInfo uniform {indices.at(i), uniform_name_str, uniform_offset, uniform_size};
+      GLuint uniform_index = indices.at(i);
+      UniformInfo uniform {uniform_index, uniform_name_str, uniform_offset, uniform_size };
       uniforms_[uniform_name_str] = uniform;
 
       DEBUG_M("Uniforms in block: %d, %s, %d, %d", uniform.index, uniform.name.c_str(), uniform.offset, uniform.size);

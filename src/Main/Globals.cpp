@@ -1,6 +1,6 @@
 #include "Globals.hpp"
 
-#include "ResourceManager.hpp"
+#include <dglw.hpp>
 
 Globals globals;
 
@@ -21,7 +21,7 @@ const std::string Globals::build_date_ = BUILD_DATE_;
 const std::string Globals::git_version_ = GIT_VERSION_;
 const std::string Globals::git_sha1_ = GIT_SHA1_;
 const std::string Globals::build_type_ = BUILD_TYPE_;
-ResourceManager Globals::rm_;
+dglw::ResourceManager Globals::rm_;
 float Globals::game_time_;
 
 Globals g;
@@ -43,7 +43,7 @@ const std::string& Globals::getBuildType() const {
    return build_type_;
 }
 
-ResourceManager& Globals::getResourceManager() const {
+dglw::ResourceManager& Globals::getResourceManager() const {
    return rm_;
 }
 

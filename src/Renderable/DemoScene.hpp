@@ -7,12 +7,12 @@
 
 #include "../ShaderBinding/ShaderManager.hpp"
 
-class Cube;
+//class Cube;
 /*class dglw::Framebuffer;
 class dglw::Renderbuffer;
 class dglw::Texture;*/
 class ErrorMesh;
-class TextureQuad;
+//class TextureQuad;
 
 #include <dglw/dglw.hpp>
 
@@ -32,9 +32,9 @@ class DemoScene {
       std::vector<std::shared_ptr<dglw::Texture>> texture_;
       int width_;
       int height_;
-      std::shared_ptr<Cube> cube_;
+      std::shared_ptr<dglw::Cube> cube_;
       std::shared_ptr<ErrorMesh> em_;
-      std::shared_ptr<TextureQuad> tq_;
+      std::shared_ptr<dglw::TextureQuad> tq_;
       float cube_rotation_;
       glm::mat4 projection_matrix_;
       dglw::MatrixStack stack_;

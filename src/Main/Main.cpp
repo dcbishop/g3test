@@ -28,6 +28,9 @@ int main(int argc, char* argv[]) {
       globals.getBuildDate().c_str()
    );
 
+   // [TODO]: Remove the use of internal Application and use the dglw ones.
+   //         Requires moving demo_scene out of the applications.
+
 #ifdef USE_QT
    QTApplication app(argc, argv);
    app.run();
@@ -47,6 +50,8 @@ int main(int argc, char* argv[]) {
    GLUTApplication app(argc, argv);
    app.run();
 #endif
-   
+
+   dglw::initialize(); 
+  
    LOG("Finished...");
 }

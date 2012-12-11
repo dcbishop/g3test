@@ -2,8 +2,7 @@
 #define G3TEST_GLOBALS_HPP_
 
 #include <string>
-
-class ResourceManager;
+#include <dglw.hpp>
 
 class Globals {
    public:
@@ -12,7 +11,7 @@ class Globals {
       const std::string& getGitSHA1() const;
       const std::string& getBuildType() const;
 
-      ResourceManager& getResourceManager() const;
+      dglw::ResourceManager& getResourceManager() const;
 
       const float& getGametime() const;
       const void setGametime(const float& game_time);
@@ -22,7 +21,7 @@ class Globals {
       static const std::string git_version_;
       static const std::string git_sha1_;
       static const std::string build_type_;
-      static ResourceManager rm_;
+      static dglw::ResourceManager rm_;
       static float game_time_;
 };
 

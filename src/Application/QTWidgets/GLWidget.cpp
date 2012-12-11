@@ -12,10 +12,16 @@ GLWidget::GLWidget(QWidget *parent) :
 }
 
 void GLWidget::initializeGL() {
-
 #ifdef USE_GLEW
-   glewInit();
+   GLenum err = glewInit();
+   if(GLEW_OK != err) {
+      ERROR("GLEW Error: %s\n", glewGetErrorString(err));
+      std::exit(EXIT_FAILURE);
+   }
+   LOG("Status: Using GLEW %s\n", glewGetString(GLEW_VERSION));
 #endif
+   dglw::initialize();
+
 
    demo_scene_ = shared_ptr<DemoScene>(new DemoScene());
    timer_.start();

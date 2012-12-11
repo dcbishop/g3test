@@ -9,12 +9,12 @@ option( Profile        "Profile"      	OFF )
 option( C++11          "C++11"        	ON  )
 option( USE_BOOST      "USE_BOOST"    	ON  )
 option( USE_OPENGL     "USE_OPENGL"   	ON  )
-option( USE_GL3H       "USE_GL3H"      ON  )
-option( USE_GLEW       "USE_GLEW"      ON  )
-option( USE_QT         "USE_QT"        ON  )
-option( USE_GLFW       "USE_GLFW"      OFF )
-option( USE_SFML       "USE_SFML"      OFF )
-option( USE_GLUT       "USE_GLUT"      OFF )
+option( USE_GLCOREARB  "USE_GLCOREARB"  ON  )
+option( USE_GLEW       "USE_GLEW"       ON  )
+option( USE_QT         "USE_QT"         ON  )
+option( USE_GLFW       "USE_GLFW"       OFF )
+option( USE_SFML       "USE_SFML"       OFF )
+option( USE_GLUT       "USE_GLUT"       OFF )
 
 # Set cmake module path
 set(CMAKE_MODULE_PATH
@@ -73,7 +73,7 @@ endif(CMAKE_BUILD_TYPE MATCHES "Debug")
 
 # GCC specific flags...
 if(CMAKE_COMPILER_IS_GNUCC)
-   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
+   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -Werror") #-Weffc++
 
    if(Profile)
@@ -90,42 +90,41 @@ if(USE_OPENGL)
    find_package(OpenGL REQUIRED)
    if(OPENGL_FOUND)
       add_definitions(-DHAVE_OPENGL)
-      set(COMMON_LIBS ${COMMON_LIBS} ${OPENGL_LIBRARIES})
+      list(APPEND COMMON_LIBS ${OPENGL_LIBRARIES})
    endif()
 endif()
 
-# For GL3/gl3.h
-if(USE_GL3H)
-   include_directories("${CMAKE_SOURCE_DIR}/external")
-   add_definitions(-DUSE_GL3H)
-   message(STATUS "Using gl3.h")
+# For glcorearb.h
+if(USE_GLCOREARB)
+   include_directories("${CMAKE_SOURCE_DIR}/extern")
+   add_definitions(-DUSE_GLCOREARB)
+   message(STATUS "Using glcorearb.h")
 endif()
 
 # GLEW
 if(USE_GLEW)
    find_package(GLEW REQUIRED)
    if(GLEW_FOUND)
-      set(COMMON_LIBS ${COMMON_LIBS} ${GLEW_LIBRARIES})
+      list(APPEND COMMON_LIBS ${GLEW_LIBRARIES})
       add_definitions(-DHAVE_GLEW)
       add_definitions(-DUSE_GLEW)
-   endif()
-endif()
-
-# Add Boost libs
-if(USE_BOOST)
-   find_package(Boost COMPONENTS filesystem system REQUIRED)
-   if(Boost_FOUND)
-      include_directories(${Boost_INCLUDE_DIRS})
-      add_definitions(-DHAVE_BOOST)
-      set(COMMON_LIBS ${COMMON_LIBS} ${Boost_LIBRARIES})
    endif()
 endif()
 
 # Add dglw libs
 find_package(dglw REQUIRED)
 include_directories(${DGLW_INCLUDE_DIRS})
-set(COMMON_LIBS ${COMMON_LIBS} ${DGLW_LIBRARIES})
-message("Debug: ${DGLW_INCLUDE_DIRS} ${DGLW_LIBRARIES}")
+list(APPEND COMMON_LIBS ${DGLW_LIBRARIES})
+
+# Add Boost libs
+if(USE_BOOST)
+   find_package(Boost COMPONENTS system filesystem REQUIRED)
+   if(Boost_FOUND)
+      include_directories(${Boost_INCLUDE_DIRS})
+      add_definitions(-DHAVE_BOOST)
+      list(APPEND COMMON_LIBS ${Boost_LIBRARIES})
+   endif()
+endif()
 
 # [TODO]: Starting with CMAKE 2.8.6 there is automoc.
 # See: http://blogs.kde.org/node/4495

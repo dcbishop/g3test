@@ -6,7 +6,6 @@
 using namespace dglw;
 
 #include "../Main/Globals.hpp"
-#include "../Main/ResourceManager.hpp"
 
 bool ErrorMesh::isInitilized_ = false;
 unsigned int ErrorMesh::refs_ = 0;
